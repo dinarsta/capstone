@@ -20,6 +20,16 @@ use App\Http\Controllers\PimpinanController;
 |--------------------------------------------------------------------------
 */
 
+
+
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.process');
+
+
+
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login');
 
@@ -46,7 +56,7 @@ Route::get('/surat-tugas/{suratTugas}/cetak', [SuratTugasController::class, 'cet
     ->name('surat-tugas.cetak');
 
 
-    
+
 Route::get('/', function () {
     if (!auth()->check()) {
         return redirect()->route('login');
