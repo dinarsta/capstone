@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SlideDisplay;
+use App\Models\Agenda;
+use App\Models\TeksBerjalan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -91,5 +93,28 @@ class SlideDisplayController extends Controller
         return redirect()
             ->route('admin.slide-display.index')
             ->with('success', 'Slide berhasil dihapus.');
+    }
+
+    // DISPLAY TV
+    public function display()
+    {
+        $slides = SlideDisplay::where('aktif', true)
+            ->orderBy('urutan')
+            ->get();
+
+        $agendas = Agenda::where('status', 'aktif')
+            ->whereDate('tanggal', today())
+            ->orderBy('waktu')
+            ->get();
+
+        $teksBerjalans = TeksBerjalan::where('aktif', true)
+            ->latest()
+            ->get();
+
+        return view('display.index', compact(
+            'slides',
+            'agendas',
+            'teksBerjalans'
+        ));
     }
 }
