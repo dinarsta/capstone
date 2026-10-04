@@ -33,6 +33,13 @@
             color: white;
         }
 
+        .brand-logo {
+            width: 180px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
         .form-control {
             background: #0d1723;
             border: 1px solid #2b3a4a;
@@ -64,6 +71,9 @@
 <body>
 
 <div class="login-card">
+
+    {{-- LOGO --}}
+    <img src="{{ asset('logo.png') }}" class="brand-logo">
 
     <h3 class="mb-1">
         Login Sistem
@@ -130,8 +140,6 @@
 
     </form>
 
-
-    {{-- REGISTER --}}
 
     <div class="text-center mt-4">
 

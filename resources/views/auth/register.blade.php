@@ -33,6 +33,13 @@
             color: white;
         }
 
+        .brand-logo {
+            width: 180px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
         .form-control {
             background: #0d1723;
             border: 1px solid #2b3a4a;
@@ -76,6 +83,9 @@
 
 <div class="register-card">
 
+    {{-- LOGO --}}
+    <img src="{{ asset('logo.png') }}" class="brand-logo">
+
     <h3 class="mb-1">
         Register
     </h3>
@@ -88,9 +98,7 @@
     @if($errors->any())
 
         <div class="alert alert-danger">
-
             {{ $errors->first() }}
-
         </div>
 
     @endif
@@ -101,9 +109,7 @@
 
         @csrf
 
-
         {{-- NAMA --}}
-
         <div class="mb-3">
 
             <label class="form-label">
@@ -123,7 +129,6 @@
 
 
         {{-- EMAIL --}}
-
         <div class="mb-3">
 
             <label class="form-label">
@@ -143,7 +148,6 @@
 
 
         {{-- PASSWORD --}}
-
         <div class="mb-3">
 
             <label class="form-label">
@@ -162,7 +166,6 @@
 
 
         {{-- KONFIRMASI PASSWORD --}}
-
         <div class="mb-4">
 
             <label class="form-label">

@@ -30,6 +30,11 @@
             min-height: calc(100vh - 50px);
         }
 
+        .brand-logo {
+    width: 300px;
+    height: auto;
+}
+
         .admin-header {
             padding: 18px 22px;
             border-bottom: 1px solid #263545;
