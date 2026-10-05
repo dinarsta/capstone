@@ -9,9 +9,12 @@ class TeksBerjalanController extends Controller
 {
     public function index()
     {
-        $teks = TeksBerjalan::latest()->get();
+        $teksBerjalans = TeksBerjalan::latest()->get();
 
-        return view('admin.teks-berjalan.index', compact('teks'));
+        return view(
+            'admin.teks-berjalan.index',
+            compact('teksBerjalans')
+        );
     }
 
     public function create()
@@ -36,16 +39,24 @@ class TeksBerjalanController extends Controller
 
     public function show(TeksBerjalan $teksBerjalan)
     {
-        return view('admin.teks-berjalan.show', compact('teksBerjalan'));
+        return view(
+            'admin.teks-berjalan.show',
+            compact('teksBerjalan')
+        );
     }
 
     public function edit(TeksBerjalan $teksBerjalan)
     {
-        return view('admin.teks-berjalan.edit', compact('teksBerjalan'));
+        return view(
+            'admin.teks-berjalan.edit',
+            compact('teksBerjalan')
+        );
     }
 
-    public function update(Request $request, TeksBerjalan $teksBerjalan)
-    {
+    public function update(
+        Request $request,
+        TeksBerjalan $teksBerjalan
+    ) {
         $data = $request->validate([
             'teks' => 'required|string',
             'aktif' => 'nullable|boolean',

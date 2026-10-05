@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class TeksBerjalan extends Model
 {
+    protected $table = 'teks_berjalans';
+
     protected $fillable = [
         'teks',
         'aktif',

@@ -3,63 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Models\TimProject;
+use App\Models\Project;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 
 class TimProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $timProjects = TimProject::with([
+            'project',
+            'pegawai'
+        ])->latest()->get();
+
+        $projects = Project::orderBy('nama_project')->get();
+
+        $pegawais = Pegawai::orderBy('nama')->get();
+
+        return view('admin.tim-project.index', compact(
+            'timProjects',
+            'projects',
+            'pegawais'
+        ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'pegawai_id' => 'required|exists:pegawais,id',
+            'peran' => 'nullable|string|max:255',
+        ]);
+
+        TimProject::create($data);
+
+        return redirect()
+            ->route('admin.tim-project.index')
+            ->with('success', 'Anggota tim berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TimProject $timProject)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TimProject $timProject)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, TimProject $timProject)
     {
-        //
+        $data = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'pegawai_id' => 'required|exists:pegawais,id',
+            'peran' => 'nullable|string|max:255',
+        ]);
+
+        $timProject->update($data);
+
+        return redirect()
+            ->route('admin.tim-project.index')
+            ->with('success', 'Anggota tim berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(TimProject $timProject)
     {
-        //
+        $timProject->delete();
+
+        return redirect()
+            ->route('admin.tim-project.index')
+            ->with('success', 'Anggota tim berhasil dihapus.');
     }
 }

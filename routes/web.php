@@ -20,22 +20,29 @@ use App\Http\Controllers\PimpinanController;
 |--------------------------------------------------------------------------
 */
 
+// Halaman utama
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+// Register
 Route::get('/register', [AuthController::class, 'showRegister'])
     ->name('register');
 
 Route::post('/register', [AuthController::class, 'register'])
     ->name('register.process');
 
+// Login
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login');
 
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login.process');
 
+// Logout
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
-
 
 /*
 |--------------------------------------------------------------------------

@@ -12,7 +12,7 @@ class SlideDisplayController extends Controller
 {
     public function index()
     {
-        $slides = SlideDisplay::orderBy('urutan')->get();
+        $slides = SlideDisplay::latest()->get();
 
         return view('admin.slide-display.index', compact('slides'));
     }
@@ -30,9 +30,11 @@ class SlideDisplayController extends Controller
             'urutan' => 'nullable|integer',
         ]);
 
-        $data['gambar'] = $request
-            ->file('gambar')
-            ->store('slide-display', 'public');
+        if ($request->hasFile('gambar')) {
+            $data['gambar'] = $request
+                ->file('gambar')
+                ->store('slide-display', 'public');
+        }
 
         $data['aktif'] = true;
 
@@ -45,16 +47,24 @@ class SlideDisplayController extends Controller
 
     public function show(SlideDisplay $slideDisplay)
     {
-        return view('admin.slide-display.show', compact('slideDisplay'));
+        return view(
+            'admin.slide-display.show',
+            compact('slideDisplay')
+        );
     }
 
     public function edit(SlideDisplay $slideDisplay)
     {
-        return view('admin.slide-display.edit', compact('slideDisplay'));
+        return view(
+            'admin.slide-display.edit',
+            compact('slideDisplay')
+        );
     }
 
-    public function update(Request $request, SlideDisplay $slideDisplay)
-    {
+    public function update(
+        Request $request,
+        SlideDisplay $slideDisplay
+    ) {
         $data = $request->validate([
             'judul' => 'nullable|string|max:255',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
@@ -65,7 +75,9 @@ class SlideDisplayController extends Controller
         if ($request->hasFile('gambar')) {
 
             if ($slideDisplay->gambar) {
-                Storage::disk('public')->delete($slideDisplay->gambar);
+                Storage::disk('public')->delete(
+                    $slideDisplay->gambar
+                );
             }
 
             $data['gambar'] = $request
@@ -85,7 +97,9 @@ class SlideDisplayController extends Controller
     public function destroy(SlideDisplay $slideDisplay)
     {
         if ($slideDisplay->gambar) {
-            Storage::disk('public')->delete($slideDisplay->gambar);
+            Storage::disk('public')->delete(
+                $slideDisplay->gambar
+            );
         }
 
         $slideDisplay->delete();
@@ -95,7 +109,6 @@ class SlideDisplayController extends Controller
             ->with('success', 'Slide berhasil dihapus.');
     }
 
-    // DISPLAY TV
     public function display()
     {
         $slides = SlideDisplay::where('aktif', true)
@@ -111,10 +124,13 @@ class SlideDisplayController extends Controller
             ->latest()
             ->get();
 
-        return view('display.index', compact(
-            'slides',
-            'agendas',
-            'teksBerjalans'
-        ));
+        return view(
+            'display.index',
+            compact(
+                'slides',
+                'agendas',
+                'teksBerjalans'
+            )
+        );
     }
 }
