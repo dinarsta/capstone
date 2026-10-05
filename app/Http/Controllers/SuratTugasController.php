@@ -8,18 +8,44 @@ use App\Models\MasterModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
+
 class SuratTugasController extends Controller
 {
-    public function index()
-    {
-        $suratTugas = SuratTugas::with([
-            'pegawai',
-            'pembuat',
-            'approver'
-        ])->latest()->get();
+   
+public function index()
+{
+    $suratTugas = SuratTugas::with([
+        'pegawai',
+        'pembuat',
+        'approver'
+    ])->latest()->get();
 
-        return view('admin.surat-tugas.index', compact('suratTugas'));
-    }
+    $pegawais = Pegawai::orderBy('nama')->get();
+
+    $instansi = MasterModel::where('kategori', 'instansi')
+        ->where('aktif', true)
+        ->orderBy('nama')
+        ->get();
+
+    $lokasi = MasterModel::where('kategori', 'lokasi')
+        ->where('aktif', true)
+        ->orderBy('nama')
+        ->get();
+
+    $jenisKegiatan = MasterModel::where('kategori', 'jenis_kegiatan')
+        ->where('aktif', true)
+        ->orderBy('nama')
+        ->get();
+
+    return view('admin.surat-tugas.index', compact(
+        'suratTugas',
+        'pegawais',
+        'instansi',
+        'lokasi',
+        'jenisKegiatan'
+    ));
+}
 
     public function create()
     {
