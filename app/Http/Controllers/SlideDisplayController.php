@@ -18,7 +18,7 @@ class SlideDisplayController extends Controller
 
     public function index()
     {
-        $slides = SlideDisplay::latest()->get();
+        $slides = SlideDisplay::orderBy('urutan')->get();
 
         return view(
             'admin.slide-display.index',
@@ -125,6 +125,7 @@ class SlideDisplayController extends Controller
 
     public function display()
     {
+        // DATA PROJECT
         $projects = Project::with([
             'createdBy',
             'timProjects.pegawai'
@@ -132,14 +133,24 @@ class SlideDisplayController extends Controller
         ->orderBy('nama_project')
         ->get();
 
+
+        // GAMBAR SLIDE YANG AKTIF
+        $slides = SlideDisplay::where('aktif', true)
+            ->orderBy('urutan')
+            ->get();
+
+
+        // TEKS BERJALAN YANG AKTIF
         $teksBerjalans = TeksBerjalan::where('aktif', true)
             ->latest()
             ->get();
+
 
         return view(
             'display.index',
             compact(
                 'projects',
+                'slides',
                 'teksBerjalans'
             )
         );

@@ -7,365 +7,788 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Display TV — Project</title>
+    <title>Display Project</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+    /* =====================================================
+           GLOBAL
+        ===================================================== */
+
     * {
         box-sizing: border-box;
     }
 
     html,
     body {
-        margin: 0;
         width: 100%;
         height: 100%;
+        margin: 0;
+        padding: 0;
     }
 
     body {
-        background: #071019;
-        color: #f4f7fa;
-        font-family: 'Poppins', sans-serif;
+
+        background:
+            radial-gradient(circle at 20% 10%,
+                rgba(43, 211, 160, .07),
+                transparent 30%),
+            radial-gradient(circle at 90% 90%,
+                rgba(65, 105, 225, .08),
+                transparent 35%),
+            #07111c;
+
+        color: #edf3f8;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
         overflow: hidden;
     }
 
-    .screen {
-        width: 100vw;
+
+    /* =====================================================
+           MAIN WRAPPER
+        ===================================================== */
+
+    .display-wrapper {
+
+        width: 100%;
+
         height: 100vh;
+
+        padding: 0 42px;
+
         display: flex;
+
         flex-direction: column;
+
     }
 
 
-    /* =========================
-           JAM
-        ========================= */
+    /* =====================================================
+           MAIN PANEL
+        ===================================================== */
 
-    .clock {
-        position: absolute;
-        top: 20px;
-        right: 45px;
+    .display-panel {
 
-        color: #36d7a4;
-
-        font-size: 30px;
-        font-weight: 700;
-
-        letter-spacing: 1px;
-
-        z-index: 20;
-    }
-
-
-    /* =========================
-           PROJECT
-        ========================= */
-
-    .project-wrapper {
         flex: 1;
+
         min-height: 0;
 
-        padding: 25px 3.5vw 15px;
-    }
+        background:
+            linear-gradient(135deg,
+                #101d2c 0%,
+                #0d1927 100%);
 
-    .project-card {
-        width: 100%;
-        height: 100%;
+        border-left: 1px solid #1d3043;
 
-        background: #101c29;
+        border-right: 1px solid #1d3043;
 
-        border: 1px solid #233344;
-        border-radius: 18px;
+        border-bottom: 1px solid #1d3043;
 
-        padding: 18px 22px 12px;
-
-        display: flex;
-        flex-direction: column;
+        border-radius:
+            0 0 18px 18px;
 
         overflow: hidden;
+
+        display: flex;
+
+        flex-direction: column;
+
+        box-shadow:
+            0 15px 50px rgba(0, 0, 0, .22);
+
     }
 
 
-    /* =========================
-           HEADER PROJECT
-        ========================= */
+    /* =====================================================
+           HEADER
+        ===================================================== */
 
-    .project-header {
+    .display-header {
+
+        height: 76px;
+
+        flex-shrink: 0;
+
+        padding: 0 25px;
+
+        background:
+            linear-gradient(90deg,
+                #14263a,
+                #112133);
+
+        border-bottom:
+            1px solid #203449;
+
         display: flex;
+
         align-items: center;
+
         justify-content: space-between;
 
-        padding-bottom: 10px;
     }
 
-    .project-title {
+
+    .header-title-wrapper {
+
         display: flex;
+
         align-items: center;
 
-        gap: 12px;
+        gap: 13px;
 
-        font-size: 27px;
-        font-weight: 800;
     }
 
-    .project-title::before {
-        content: "";
 
-        width: 13px;
-        height: 32px;
+    .header-line {
 
-        border-radius: 5px;
+        width: 7px;
 
-        background: #36d7a4;
-    }
+        height: 38px;
 
-    .project-count {
-        padding: 7px 16px;
+        background:
+            linear-gradient(180deg,
+                #43e6b0,
+                #24c894);
 
         border-radius: 20px;
 
-        background: #1b2b3c;
+        box-shadow:
+            0 0 16px rgba(50, 217, 160, .35);
 
-        color: #b9c7d4;
-
-        font-size: 16px;
-    }
-
-    .project-count strong {
-        color: white;
-        font-size: 17px;
     }
 
 
-    /* =========================
-           GRID
-        ========================= */
+    .header-title {
 
-    .project-grid {
-        flex: 1;
-        min-height: 0;
+        color: #ffffff;
 
-        display: grid;
+        font-size: 25px;
 
-        grid-template-columns: 1fr 1fr;
+        font-weight: 800;
 
-        column-gap: 45px;
+        letter-spacing: .8px;
 
-        overflow: hidden;
-    }
-
-    .project-column {
-        min-width: 0;
-        overflow: hidden;
     }
 
 
-    /* =========================
-           PROJECT ITEM
-        ========================= */
+    .header-subtitle {
 
-    .project-item {
-        padding: 7px 0 10px;
+        margin-top: 2px;
 
-        border-bottom: 1px solid #263746;
-
-        min-height: 72px;
-    }
-
-    .project-top {
-        display: flex;
-
-        align-items: center;
-
-        gap: 12px;
-    }
-
-    .project-number {
-        width: 25px;
-
-        color: #8fa1b3;
-
-        font-size: 13px;
-
-        font-weight: 600;
-
-        text-align: center;
-    }
-
-    .project-name {
-        flex: 1;
-
-        min-width: 0;
-
-        color: #f4f7fa;
-
-        font-size: 16px;
-
-        font-weight: 700;
-
-        white-space: nowrap;
-
-        overflow: hidden;
-
-        text-overflow: ellipsis;
-    }
-
-    .project-percent {
-        color: #36d7a4;
-
-        font-size: 14px;
-
-        font-weight: 700;
-    }
-
-
-    /* =========================
-           PROGRESS
-        ========================= */
-
-    .progress-track {
-        margin:
-
-            6px 0 7px 37px;
-
-        height: 7px;
-
-        background: #263543;
-
-        border-radius: 10px;
-
-        overflow: hidden;
-    }
-
-    .progress-bar {
-        height: 100%;
-
-        background: #36d7a4;
-
-        border-radius: 10px;
-    }
-
-
-    /* =========================
-           INFO
-        ========================= */
-
-    .project-info {
-        margin-left: 37px;
-
-        display: flex;
-
-        gap: 25px;
-
-        align-items: center;
-
-        white-space: nowrap;
-
-        overflow: hidden;
-    }
-
-    .info-group {
-        display: flex;
-
-        align-items: center;
-
-        gap: 7px;
-
-        min-width: 0;
-    }
-
-    .info-label {
-        color: #71879a;
+        color: #71869a;
 
         font-size: 9px;
 
-        font-weight: 700;
+        font-weight: 600;
 
-        letter-spacing: .4px;
+        letter-spacing: 1.5px;
+
     }
 
-    .info-value {
-        color: #e3eaf0;
 
-        font-size: 11px;
+    /* =====================================================
+           HEADER RIGHT
+        ===================================================== */
 
-        font-weight: 600;
+    .header-right {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 22px;
+
+    }
+
+
+    /* =====================================================
+           CLOCK
+        ===================================================== */
+
+    .clock-box {
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: flex-end;
+
+        line-height: 1;
+
+    }
+
+
+    .clock {
+
+        color: #48e3b1;
+
+        font-size: 25px;
+
+        font-weight: 800;
+
+        letter-spacing: 1.5px;
+
+        text-shadow:
+            0 0 15px rgba(54, 216, 161, .15);
+
+    }
+
+
+    .clock-label {
+
+        margin-top: 5px;
+
+        color: #5d7185;
+
+        font-size: 8px;
+
+        font-weight: 700;
+
+        letter-spacing: 1.5px;
+
+    }
+
+
+    /* =====================================================
+           PROJECT COUNTER
+        ===================================================== */
+
+    .project-count {
+
+        min-width: 90px;
+
+        padding: 9px 14px;
+
+        background: #1a2c40;
+
+        border:
+            1px solid #294057;
+
+        border-radius: 12px;
+
+        text-align: center;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, .03);
+
+    }
+
+
+    .project-count-number {
+
+        display: block;
+
+        color: #ffffff;
+
+        font-size: 17px;
+
+        font-weight: 800;
+
+        line-height: 1;
+
+    }
+
+
+    .project-count-label {
+
+        display: block;
+
+        margin-top: 4px;
+
+        color: #71869a;
+
+        font-size: 7px;
+
+        font-weight: 800;
+
+        letter-spacing: 1px;
+
+    }
+
+
+    /* =====================================================
+           PROJECT AREA
+        ===================================================== */
+
+    .project-area {
+
+        flex: 1;
+
+        min-height: 0;
+
+        padding: 15px 20px;
+
+        overflow: hidden;
+
+    }
+
+
+    .project-grid {
+
+        width: 100%;
+
+        height: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 18px;
+
+    }
+
+
+    .project-column {
+
+        min-width: 0;
+
+        height: 100%;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 8px;
+
+    }
+
+
+    /* =====================================================
+           PROJECT CARD
+        ===================================================== */
+
+    .project-card {
+
+        flex: 1;
+
+        min-height: 0;
+
+        position: relative;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 13px;
+
+        padding: 10px 13px;
+
+        background:
+            linear-gradient(135deg,
+                rgba(20, 35, 51, .95),
+                rgba(14, 27, 41, .95));
+
+        border:
+            1px solid #203449;
+
+        border-radius: 12px;
+
+        overflow: hidden;
+
+        transition:
+            transform .2s ease,
+            border-color .2s ease;
+
+    }
+
+
+    .project-card::before {
+
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+
+        top: 0;
+
+        bottom: 0;
+
+        width: 3px;
+
+        background: #35d7a0;
+
+        opacity: .75;
+
+    }
+
+
+    .project-card:hover {
+
+        border-color: #31506b;
+
+        transform: translateY(-1px);
+
+    }
+
+
+    /* =====================================================
+           PROJECT LOGO
+        ===================================================== */
+
+    .project-image {
+
+        width: 50px;
+
+        height: 50px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        overflow: hidden;
+
+        background:
+            linear-gradient(145deg,
+                #0d1a29,
+                #122337);
+
+        border:
+            1px solid #2a4055;
+
+        border-radius: 11px;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, .03);
+
+    }
+
+
+    .project-image img {
+
+        width: 100%;
+
+        height: 100%;
+
+        padding: 5px;
+
+        object-fit: contain;
+
+        display: block;
+
+    }
+
+
+    .no-image {
+
+        color: #52687c;
+
+        font-size: 6px;
+
+        font-weight: 800;
+
+        text-align: center;
+
+        letter-spacing: .5px;
+
+    }
+
+
+    /* =====================================================
+           PROJECT DETAIL
+        ===================================================== */
+
+    .project-detail {
+
+        flex: 1;
+
+        min-width: 0;
+
+    }
+
+
+    /* =====================================================
+           TOP ROW
+        ===================================================== */
+
+    .project-header-row {
+
+        width: 100%;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+    }
+
+
+    .project-number {
+
+        width: 24px;
+
+        height: 24px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #1a3044;
+
+        border:
+            1px solid #29465c;
+
+        border-radius: 7px;
+
+        color: #7990a5;
+
+        font-size: 8px;
+
+        font-weight: 800;
+
+    }
+
+
+    .project-name {
+
+        flex: 1;
+
+        min-width: 0;
+
+        color: #f5f8fa;
+
+        font-size: 14px;
+
+        font-weight: 800;
+
+        white-space: nowrap;
 
         overflow: hidden;
 
         text-overflow: ellipsis;
+
     }
 
 
-    /* =========================
-           EMPTY
-        ========================= */
+    .project-percent {
 
-    .empty-project {
-        grid-column: 1 / -1;
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        color: #718497;
-
-        font-size: 20px;
-    }
-
-
-    /* =========================
-           RUNNING TEXT
-        ========================= */
-
-    .running-wrapper {
-
-        height: 90px;
+        min-width: 42px;
 
         flex-shrink: 0;
 
-        display: flex;
+        color: #45dfac;
 
-        align-items: stretch;
+        font-size: 11px;
 
-        border-top: 1px solid #263545;
+        font-weight: 800;
 
-        background: #0b141d;
+        text-align: right;
+
+    }
+
+
+    /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+    .project-progress {
+
+        width: 100%;
+
+        margin-top: 8px;
+
+    }
+
+
+    .project-progress .progress {
+
+        height: 6px;
+
+        background: #263746;
+
+        border-radius: 20px;
 
         overflow: hidden;
+
     }
 
 
-    .running-label {
+    .project-progress .progress-bar {
 
-        width: 170px;
+        position: relative;
 
-        flex-shrink: 0;
+        background:
+            linear-gradient(90deg,
+                #25c993,
+                #46e5b1);
 
-        background: #ffb52e;
+        border-radius: 20px;
 
-        color: #111;
+        box-shadow:
+            0 0 9px rgba(50, 217, 160, .25);
+
+    }
+
+
+    /* =====================================================
+           PROJECT INFO
+        ===================================================== */
+
+    .project-info {
 
         display: flex;
 
         align-items: center;
 
-        justify-content: center;
+        gap: 15px;
 
-        font-size: 24px;
+        margin-top: 8px;
+
+        min-width: 0;
+
+        overflow: hidden;
+
+    }
+
+
+    .info-group {
+
+        min-width: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+    }
+
+
+    .info-label {
+
+        color: #526a7f;
+
+        font-size: 7px;
 
         font-weight: 800;
 
         letter-spacing: .5px;
 
-        clip-path: polygon(0 0,
+    }
+
+
+    .info-value {
+
+        color: #b8c7d4;
+
+        font-size: 9px;
+
+        font-weight: 700;
+
+        max-width: 170px;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+
+    }
+
+
+    /* =====================================================
+           EMPTY
+        ===================================================== */
+
+    .empty-project {
+
+        width: 100%;
+
+        height: 100%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: #62778b;
+
+        font-size: 15px;
+
+    }
+
+
+    /* =====================================================
+           RUNNING TEXT
+        ===================================================== */
+
+    .running-wrapper {
+
+        height: 66px;
+
+        flex-shrink: 0;
+
+        margin-top: 10px;
+
+        margin-left: -42px;
+
+        margin-right: -42px;
+
+        background:
+            linear-gradient(90deg,
+                #0b1723,
+                #09131e);
+
+        border-top:
+            1px solid #233749;
+
+        display: flex;
+
+        align-items: center;
+
+    }
+
+
+    .running-label {
+
+        width: 145px;
+
+        height: 66px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background:
+            linear-gradient(135deg,
+                #f7bc3d,
+                #e9a925);
+
+        color: #111820;
+
+        font-size: 16px;
+
+        font-weight: 900;
+
+        letter-spacing: .8px;
+
+        clip-path:
+            polygon(0 0,
                 100% 0,
-                90% 100%,
+                88% 100%,
                 0 100%);
+
     }
 
 
@@ -373,52 +796,157 @@
 
         flex: 1;
 
+        min-width: 0;
+
+        height: 100%;
+
         overflow: hidden;
 
         display: flex;
 
         align-items: center;
 
+    }
+
+
+    .running-track {
+
+        display: inline-flex;
+
+        align-items: center;
+
         white-space: nowrap;
+
+        animation:
+            marquee 28s linear infinite;
+
     }
 
 
     .running-text {
 
-        display: inline-block;
+        color: #e6edf3;
 
-        padding-left: 100%;
+        font-size: 19px;
 
-        color: #ffffff;
+        font-weight: 700;
 
-        font-size: 27px;
+        letter-spacing: .2px;
 
-        font-weight: 600;
+        padding-right: 90px;
 
-        letter-spacing: .3px;
-
-        animation: running 25s linear infinite;
     }
 
 
-    .running-text span {
+    .running-text::after {
 
-        color: #ffb52e;
+        content: "◆";
 
-        margin: 0 25px;
+        color: #f0b52f;
 
-        font-size: 28px;
+        font-size: 8px;
+
+        margin-left: 35px;
+
+        vertical-align: middle;
+
     }
 
 
-    @keyframes running {
+    @keyframes marquee {
 
-        0% {
-            transform: translateX(0);
+        from {
+            transform:
+                translateX(100%);
         }
 
-        100% {
-            transform: translateX(-100%);
+        to {
+            transform:
+                translateX(-100%);
+        }
+
+    }
+
+
+    /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+    @media (max-width: 1100px) {
+
+        .display-wrapper {
+
+            padding-left: 20px;
+
+            padding-right: 20px;
+
+        }
+
+        .running-wrapper {
+
+            margin-left: -20px;
+
+            margin-right: -20px;
+
+        }
+
+        .project-image {
+
+            width: 42px;
+
+            height: 42px;
+
+        }
+
+        .project-name {
+
+            font-size: 12px;
+
+        }
+
+        .info-value {
+
+            max-width: 110px;
+
+        }
+
+    }
+
+
+    @media (max-width: 800px) {
+
+        .display-wrapper {
+
+            padding-left: 10px;
+
+            padding-right: 10px;
+
+        }
+
+        .running-wrapper {
+
+            margin-left: -10px;
+
+            margin-right: -10px;
+
+        }
+
+        .project-grid {
+
+            grid-template-columns: 1fr;
+
+        }
+
+        .project-column:nth-child(2) {
+
+            display: none;
+
+        }
+
+        .header-subtitle {
+
+            display: none;
+
         }
 
     }
@@ -429,76 +957,160 @@
 
 <body>
 
-    <div class="screen">
+
+    <div class="display-wrapper">
 
 
-        {{-- JAM --}}
+        {{-- =====================================================
+         DISPLAY PANEL
+    ====================================================== --}}
 
-        <div class="clock" id="clock">
-            00:00:00
-        </div>
-
-
-        {{-- PROJECT --}}
-
-        <main class="project-wrapper">
-
-            <div class="project-card">
+        <div class="display-panel">
 
 
-                <div class="project-header">
+            {{-- =================================================
+             HEADER
+        ================================================== --}}
 
-                    <div class="project-title">
-                        SEMUA PROJECT
-                    </div>
+            <div class="display-header">
 
-                    <div class="project-count">
 
-                        <strong>
-                            {{ $projects->count() }}
-                        </strong>
+                {{-- LEFT --}}
 
-                        PROJECT
+                <div class="header-title-wrapper">
+
+                    <div class="header-line"></div>
+
+                    <div>
+
+                        <div class="header-title">
+                            SEMUA PROJECT
+                        </div>
+
+                        <div class="header-subtitle">
+                            MONITORING PROJECT
+                        </div>
 
                     </div>
 
                 </div>
+
+
+                {{-- RIGHT --}}
+
+                <div class="header-right">
+
+
+                    {{-- CLOCK --}}
+
+                    <div class="clock-box">
+
+                        <div id="clock" class="clock">
+                            00:00:00
+                        </div>
+
+                        <div class="clock-label">
+                            WAKTU SEKARANG
+                        </div>
+
+                    </div>
+
+
+                    {{-- PROJECT COUNT --}}
+
+                    <div class="project-count">
+
+                        <span class="project-count-number">
+                            {{ $projects->count() }}
+                        </span>
+
+                        <span class="project-count-label">
+                            PROJECT AKTIF
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            {{-- =================================================
+             PROJECT AREA
+        ================================================== --}}
+
+            <div class="project-area">
+
+
+                @if($projects->count() > 0)
+
+
+                @php
+
+                $totalProjects =
+                $projects->count();
+
+                $half =
+                ceil($totalProjects / 2);
+
+                $leftProjects =
+                $projects->slice(
+                0,
+                $half
+                );
+
+                $rightProjects =
+                $projects->slice(
+                $half
+                );
+
+                @endphp
 
 
                 <div class="project-grid">
 
-                    @if($projects->count() > 0)
 
-                    {{-- KIRI --}}
+                    {{-- =================================================
+                         LEFT COLUMN
+                    ================================================== --}}
 
                     <div class="project-column">
 
+
                         @foreach(
-                        $projects->slice(
-                        0,
-                        ceil($projects->count() / 2)
-                        )
+                        $leftProjects
                         as $index => $project
                         )
 
+
                         @php
 
-                        $progress = max(
-                        0,
-                        min(
-                        100,
-                        (int) $project->progress
-                        )
+                        $progress = min(
+                        max(
+                        (int) (
+                        $project->progress
+                        ?? 0
+                        ),
+                        0
+                        ),
+                        100
                         );
 
-                        $koordinator =
-                        $project->createdBy?->name
-                        ?? 'Belum ada';
-
-                        $tim = $project->timProjects
+                        $timNames =
+                        $project
+                        ->timProjects
                         ->map(
-                        fn ($tim) =>
-                        $tim->pegawai?->nama
+                        function ($tim) {
+
+                        return
+                        $tim
+                        ->pegawai
+                        ->nama
+                        ?? null;
+
+                        }
                         )
                         ->filter()
                         ->implode(', ');
@@ -506,105 +1118,177 @@
                         @endphp
 
 
-                        <div class="project-item">
+                        <div class="project-card">
 
-                            <div class="project-top">
 
-                                <div class="project-number">
-                                    {{ $index + 1 }}
+                            {{-- PROJECT IMAGE --}}
+
+                            <div class="project-image">
+
+                                @if(
+                                $project->slides
+                                &&
+                                $project->slides->count() > 0
+                                )
+
+                                <img src="{{ asset(
+                                                'storage/' .
+                                                $project
+                                                    ->slides
+                                                    ->first()
+                                                    ->gambar
+                                            ) }}" alt="{{ $project->nama_project }}">
+
+                                @else
+
+                                <div class="no-image">
+                                    NO IMAGE
                                 </div>
 
-                                <div class="project-name">
-                                    {{ $project->nama_project }}
-                                </div>
-
-                                <div class="project-percent">
-                                    {{ $progress }}%
-                                </div>
+                                @endif
 
                             </div>
 
 
-                            <div class="progress-track">
+                            {{-- PROJECT DETAIL --}}
 
-                                <div class="progress-bar" style="width: {{ $progress }}%;">
+                            <div class="project-detail">
+
+
+                                {{-- NAME --}}
+
+                                <div class="project-header-row">
+
+
+                                    <div class="project-number">
+                                        {{ $index + 1 }}
+                                    </div>
+
+
+                                    <div class="project-name" title="{{ $project->nama_project }}">
+                                        {{ $project->nama_project }}
+                                    </div>
+
+
+                                    <div class="project-percent">
+                                        {{ $progress }}%
+                                    </div>
+
+
                                 </div>
+
+
+                                {{-- PROGRESS --}}
+
+                                <div class="project-progress">
+
+                                    <div class="progress">
+
+                                        <div class="progress-bar" role="progressbar" style="
+                                                    width:
+                                                    {{ $progress }}%;
+                                                "></div>
+
+                                    </div>
+
+                                </div>
+
+
+                                {{-- INFO --}}
+
+                                <div class="project-info">
+
+
+                                    <div class="info-group">
+
+                                        <span class="info-label">
+                                            KOORDINATOR
+                                        </span>
+
+                                        <span class="info-value">
+                                            {{
+                                                    $project
+                                                        ->createdBy
+                                                        ->name
+                                                    ?? '-'
+                                                }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="info-group">
+
+                                        <span class="info-label">
+                                            TIM
+                                        </span>
+
+                                        <span class="info-value" title="{{ $timNames }}">
+                                            {{ $timNames ?: '-' }}
+                                        </span>
+
+                                    </div>
+
+
+                                </div>
+
 
                             </div>
 
-
-                            <div class="project-info">
-
-                                <div class="info-group">
-
-                                    <span class="info-label">
-                                        KOORDINATOR
-                                    </span>
-
-                                    <span class="info-value">
-                                        {{ $koordinator }}
-                                    </span>
-
-                                </div>
-
-
-                                <div class="info-group">
-
-                                    <span class="info-label">
-                                        TIM
-                                    </span>
-
-                                    <span class="info-value">
-
-                                        {{ $tim ?: 'Belum ada' }}
-
-                                    </span>
-
-                                </div>
-
-                            </div>
 
                         </div>
 
+
                         @endforeach
+
 
                     </div>
 
 
-                    {{-- KANAN --}}
+                    {{-- =================================================
+                         RIGHT COLUMN
+                    ================================================== --}}
 
                     <div class="project-column">
 
+
                         @foreach(
-                        $projects->slice(
-                        ceil($projects->count() / 2)
-                        )
+                        $rightProjects
                         as $index => $project
                         )
 
+
                         @php
 
-                        $progress = max(
-                        0,
-                        min(
-                        100,
-                        (int) $project->progress
-                        )
+                        $progress = min(
+                        max(
+                        (int) (
+                        $project->progress
+                        ?? 0
+                        ),
+                        0
+                        ),
+                        100
                         );
 
-                        $nomor =
-                        ceil($projects->count() / 2)
+                        $number =
+                        $half
                         + $index
                         + 1;
 
-                        $koordinator =
-                        $project->createdBy?->name
-                        ?? 'Belum ada';
-
-                        $tim = $project->timProjects
+                        $timNames =
+                        $project
+                        ->timProjects
                         ->map(
-                        fn ($tim) =>
-                        $tim->pegawai?->nama
+                        function ($tim) {
+
+                        return
+                        $tim
+                        ->pegawai
+                        ->nama
+                        ?? null;
+
+                        }
                         )
                         ->filter()
                         ->implode(', ');
@@ -612,90 +1296,161 @@
                         @endphp
 
 
-                        <div class="project-item">
+                        <div class="project-card">
 
-                            <div class="project-top">
 
-                                <div class="project-number">
-                                    {{ $nomor }}
+                            {{-- PROJECT IMAGE --}}
+
+                            <div class="project-image">
+
+                                @if(
+                                $project->slides
+                                &&
+                                $project->slides->count() > 0
+                                )
+
+                                <img src="{{ asset(
+                                                'storage/' .
+                                                $project
+                                                    ->slides
+                                                    ->first()
+                                                    ->gambar
+                                            ) }}" alt="{{ $project->nama_project }}">
+
+                                @else
+
+                                <div class="no-image">
+                                    NO IMAGE
                                 </div>
 
-                                <div class="project-name">
-                                    {{ $project->nama_project }}
-                                </div>
-
-                                <div class="project-percent">
-                                    {{ $progress }}%
-                                </div>
+                                @endif
 
                             </div>
 
 
-                            <div class="progress-track">
+                            {{-- PROJECT DETAIL --}}
 
-                                <div class="progress-bar" style="width: {{ $progress }}%;">
+                            <div class="project-detail">
+
+
+                                {{-- NAME --}}
+
+                                <div class="project-header-row">
+
+
+                                    <div class="project-number">
+                                        {{ $number }}
+                                    </div>
+
+
+                                    <div class="project-name" title="{{ $project->nama_project }}">
+                                        {{ $project->nama_project }}
+                                    </div>
+
+
+                                    <div class="project-percent">
+                                        {{ $progress }}%
+                                    </div>
+
+
                                 </div>
+
+
+                                {{-- PROGRESS --}}
+
+                                <div class="project-progress">
+
+                                    <div class="progress">
+
+                                        <div class="progress-bar" role="progressbar" style="
+                                                    width:
+                                                    {{ $progress }}%;
+                                                "></div>
+
+                                    </div>
+
+                                </div>
+
+
+                                {{-- INFO --}}
+
+                                <div class="project-info">
+
+
+                                    <div class="info-group">
+
+                                        <span class="info-label">
+                                            KOORDINATOR
+                                        </span>
+
+                                        <span class="info-value">
+                                            {{
+                                                    $project
+                                                        ->createdBy
+                                                        ->name
+                                                    ?? '-'
+                                                }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="info-group">
+
+                                        <span class="info-label">
+                                            TIM
+                                        </span>
+
+                                        <span class="info-value" title="{{ $timNames }}">
+                                            {{ $timNames ?: '-' }}
+                                        </span>
+
+                                    </div>
+
+
+                                </div>
+
 
                             </div>
 
-
-                            <div class="project-info">
-
-                                <div class="info-group">
-
-                                    <span class="info-label">
-                                        KOORDINATOR
-                                    </span>
-
-                                    <span class="info-value">
-                                        {{ $koordinator }}
-                                    </span>
-
-                                </div>
-
-
-                                <div class="info-group">
-
-                                    <span class="info-label">
-                                        TIM
-                                    </span>
-
-                                    <span class="info-value">
-
-                                        {{ $tim ?: 'Belum ada' }}
-
-                                    </span>
-
-                                </div>
-
-                            </div>
 
                         </div>
 
+
                         @endforeach
 
-                    </div>
-
-                    @else
-
-                    <div class="empty-project">
-
-                        Belum ada project yang tersedia.
 
                     </div>
 
-                    @endif
 
                 </div>
 
+
+                @else
+
+
+                <div class="empty-project">
+
+                    Belum ada project yang tersedia.
+
+                </div>
+
+
+                @endif
+
+
             </div>
 
-        </main>
+
+        </div>
 
 
-        {{-- TEKS BERJALAN --}}
+        {{-- =====================================================
+         RUNNING TEXT
+    ====================================================== --}}
 
-        <footer class="running-wrapper">
+        <div class="running-wrapper">
+
 
             <div class="running-label">
                 INFO
@@ -704,56 +1459,114 @@
 
             <div class="running-content">
 
-                <div class="running-text">
 
-                    @forelse($teksBerjalans as $teks)
+                @if($teksBerjalans->count() > 0)
 
-                    {{ $teks->teks }}
 
-                    <span>•</span>
+                <div class="running-track">
 
-                    @empty
 
-                    Selamat datang di Display Informasi
+                    @foreach(
+                    $teksBerjalans
+                    as $teks
+                    )
 
-                    <span>•</span>
+                    <span class="running-text">
+                        {{ $teks->teks }}
+                    </span>
 
-                    Pusat Informasi dan Kegiatan
+                    @endforeach
 
-                    <span>•</span>
-
-                    Bagi yang bertugas harap selalu menyampaikan laporan kepada Admin
-
-                    @endforelse
 
                 </div>
 
+
+                @else
+
+
+                <div class="running-track">
+
+                    <span class="running-text">
+                        Pusat Informasi dan Kegiatan
+                    </span>
+
+                </div>
+
+
+                @endif
+
+
             </div>
 
-        </footer>
+
+        </div>
+
 
     </div>
 
+
+    {{-- =====================================================
+     CLOCK SCRIPT
+====================================================== --}}
 
     <script>
     function updateClock() {
 
         const now = new Date();
 
-        const time = now.toLocaleTimeString('id-ID', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
 
-        document.getElementById('clock').innerText = time;
+        const hours =
+            String(
+                now.getHours()
+            ).padStart(
+                2,
+                '0'
+            );
+
+
+        const minutes =
+            String(
+                now.getMinutes()
+            ).padStart(
+                2,
+                '0'
+            );
+
+
+        const seconds =
+            String(
+                now.getSeconds()
+            ).padStart(
+                2,
+                '0'
+            );
+
+
+        const clock =
+            document.getElementById(
+                'clock'
+            );
+
+
+        if (clock) {
+
+            clock.textContent =
+                `${hours}:${minutes}:${seconds}`;
+
+        }
 
     }
 
+
     updateClock();
 
-    setInterval(updateClock, 1000);
+
+    setInterval(
+        updateClock,
+        1000
+    );
     </script>
+
 
 </body>
 
