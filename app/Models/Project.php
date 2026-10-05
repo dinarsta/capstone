@@ -16,13 +16,13 @@ class Project extends Model
         'created_by',
     ];
 
-    public function user()
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function timProject()
+    public function timProjects()
     {
-        return $this->hasMany(TimProject::class);
+        return $this->hasMany(TimProject::class, 'project_id');
     }
 }

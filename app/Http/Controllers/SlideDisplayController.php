@@ -3,18 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\SlideDisplay;
-use App\Models\Agenda;
+use App\Models\Project;
 use App\Models\TeksBerjalan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class SlideDisplayController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN - SLIDE DISPLAY
+    |--------------------------------------------------------------------------
+    */
+
     public function index()
     {
         $slides = SlideDisplay::latest()->get();
 
-        return view('admin.slide-display.index', compact('slides'));
+        return view(
+            'admin.slide-display.index',
+            compact('slides')
+        );
     }
 
     public function create()
@@ -30,11 +39,9 @@ class SlideDisplayController extends Controller
             'urutan' => 'nullable|integer',
         ]);
 
-        if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request
-                ->file('gambar')
-                ->store('slide-display', 'public');
-        }
+        $data['gambar'] = $request
+            ->file('gambar')
+            ->store('slide-display', 'public');
 
         $data['aktif'] = true;
 
@@ -109,16 +116,21 @@ class SlideDisplayController extends Controller
             ->with('success', 'Slide berhasil dihapus.');
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | DISPLAY TV
+    |--------------------------------------------------------------------------
+    */
+
     public function display()
     {
-        $slides = SlideDisplay::where('aktif', true)
-            ->orderBy('urutan')
-            ->get();
-
-        $agendas = Agenda::where('status', 'aktif')
-            ->whereDate('tanggal', today())
-            ->orderBy('waktu')
-            ->get();
+        $projects = Project::with([
+            'createdBy',
+            'timProjects.pegawai'
+        ])
+        ->orderBy('nama_project')
+        ->get();
 
         $teksBerjalans = TeksBerjalan::where('aktif', true)
             ->latest()
@@ -127,8 +139,7 @@ class SlideDisplayController extends Controller
         return view(
             'display.index',
             compact(
-                'slides',
-                'agendas',
+                'projects',
                 'teksBerjalans'
             )
         );
