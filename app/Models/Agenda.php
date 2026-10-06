@@ -16,7 +16,7 @@ class Agenda extends Model
         'created_by',
     ];
 
-    public function user()
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }

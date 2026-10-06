@@ -16,13 +16,36 @@ class Project extends Model
         'created_by',
     ];
 
+    /**
+     * Project dibuat oleh satu user.
+     */
     public function createdBy()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(
+            User::class,
+            'created_by'
+        );
     }
 
+    /**
+     * Project memiliki banyak anggota tim.
+     */
     public function timProjects()
     {
-        return $this->hasMany(TimProject::class, 'project_id');
+        return $this->hasMany(
+            TimProject::class,
+            'project_id'
+        );
+    }
+
+    /**
+     * Project memiliki banyak slide display.
+     */
+    public function slides()
+    {
+        return $this->hasMany(
+            SlideDisplay::class,
+            'project_id'
+        );
     }
 }

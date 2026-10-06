@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('slide_displays', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('project_id')
+                ->nullable()
+                ->constrained('projects')
+                ->nullOnDelete();
+
             $table->string('judul')->nullable();
 
             $table->string('gambar')->nullable();

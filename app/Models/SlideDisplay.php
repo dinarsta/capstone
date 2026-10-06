@@ -9,6 +9,7 @@ class SlideDisplay extends Model
     protected $table = 'slide_displays';
 
     protected $fillable = [
+        'project_id',
         'judul',
         'gambar',
         'urutan',
@@ -19,4 +20,15 @@ class SlideDisplay extends Model
         'aktif' => 'boolean',
         'urutan' => 'integer',
     ];
+
+    /**
+     * Slide ini milik satu project.
+     */
+    public function project()
+    {
+        return $this->belongsTo(
+            Project::class,
+            'project_id'
+        );
+    }
 }

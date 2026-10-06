@@ -14,13 +14,19 @@ class Pegawai extends Model
         'pangkat',
     ];
 
-    public function timProject()
+    public function timProjects()
     {
-        return $this->hasMany(TimProject::class);
+        return $this->hasMany(
+            TimProject::class,
+            'pegawai_id'
+        );
     }
 
     public function suratTugas()
     {
-        return $this->hasMany(SuratTugas::class);
+        return $this->hasMany(
+            SuratTugas::class,
+            'pegawai_id'
+        );
     }
 }
