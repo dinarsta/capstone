@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ProjectController;
@@ -22,45 +23,6 @@ use App\Http\Controllers\PimpinanController;
 
 // Halaman utama
 Route::get('/', function () {
-    return redirect()->route('login');
-});
-
-// Register
-Route::get('/register', [AuthController::class, 'showRegister'])
-    ->name('register');
-
-Route::post('/register', [AuthController::class, 'register'])
-    ->name('register.process');
-
-// Login
-Route::get('/login', [AuthController::class, 'showLogin'])
-    ->name('login');
-
-Route::post('/login', [AuthController::class, 'login'])
-    ->name('login.process');
-
-// Logout
-Route::post('/logout', [AuthController::class, 'logout'])
-    ->middleware('auth')
-    ->name('logout');
-
-/*
-|--------------------------------------------------------------------------
-| DISPLAY TV
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/display', [SlideDisplayController::class, 'display'])
-    ->name('display');
-
-
-/*
-|--------------------------------------------------------------------------
-| ROOT
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/', function () {
 
     if (!auth()->check()) {
         return redirect()->route('login');
@@ -76,6 +38,38 @@ Route::get('/', function () {
 
     abort(403);
 });
+
+
+// Register
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.process');
+
+
+// Login
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.process');
+
+
+// Logout
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
+
+
+/*
+|--------------------------------------------------------------------------
+| DISPLAY TV
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/display', [SlideDisplayController::class, 'display'])
+    ->name('display');
 
 
 /*
@@ -145,11 +139,6 @@ Route::middleware(['auth', 'role:admin'])
             [SuratTugasController::class, 'ajukan']
         )->name('surat-tugas.ajukan');
 
-        Route::get(
-            '/surat-tugas/{suratTugas}/cetak',
-            [SuratTugasController::class, 'cetak']
-        )->name('surat-tugas.cetak');
-
         Route::resource(
             'surat-tugas',
             SuratTugasController::class
@@ -213,7 +202,7 @@ Route::middleware(['auth', 'role:pimpinan'])
 
         Route::get(
             '/dashboard',
-            [PimpinanController::class, 'index']
+            [PimpinanController::class, 'dashboard']
         )->name('dashboard');
 
 
@@ -225,8 +214,8 @@ Route::middleware(['auth', 'role:pimpinan'])
 
         Route::get(
             '/surat-tugas',
-            [PimpinanController::class, 'suratTugas']
-        )->name('surat-tugas');
+            [PimpinanController::class, 'index']
+        )->name('surat-tugas.index');
 
 
         /*
@@ -236,8 +225,8 @@ Route::middleware(['auth', 'role:pimpinan'])
         */
 
         Route::get(
-            '/surat-tugas/{id}',
-            [PimpinanController::class, 'detailSurat']
+            '/surat-tugas/{suratTugas}',
+            [PimpinanController::class, 'detail']
         )->name('surat-tugas.detail');
 
 
@@ -248,7 +237,7 @@ Route::middleware(['auth', 'role:pimpinan'])
         */
 
         Route::post(
-            '/surat-tugas/{id}/approve',
+            '/surat-tugas/{suratTugas}/approve',
             [PimpinanController::class, 'approve']
         )->name('surat-tugas.approve');
 
@@ -260,8 +249,20 @@ Route::middleware(['auth', 'role:pimpinan'])
         */
 
         Route::post(
-            '/surat-tugas/{id}/reject',
+            '/surat-tugas/{suratTugas}/reject',
             [PimpinanController::class, 'reject']
         )->name('surat-tugas.reject');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CETAK SURAT TUGAS
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get(
+            '/surat-tugas/{suratTugas}/cetak',
+            [PimpinanController::class, 'cetak']
+        )->name('surat-tugas.cetak');
 
     });

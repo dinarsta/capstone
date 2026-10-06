@@ -7,76 +7,162 @@ use Illuminate\Http\Request;
 
 class PimpinanController extends Controller
 {
-    public function index()
+    /**
+     * Dashboard Pimpinan
+     */
+    public function dashboard()
     {
-        $jumlahMenunggu = SuratTugas::where('status', 'diajukan')->count();
+        $totalSurat = SuratTugas::count();
 
-        $jumlahDisetujui = SuratTugas::where('status', 'disetujui')->count();
+        $diajukan = SuratTugas::where('status', 'diajukan')->count();
 
-        $jumlahDitolak = SuratTugas::where('status', 'ditolak')->count();
+        $disetujui = SuratTugas::where('status', 'disetujui')->count();
+
+        $ditolak = SuratTugas::where('status', 'ditolak')->count();
+
+        $suratTerbaru = SuratTugas::with([
+            'pegawai',
+            'pembuat',
+            'approver',
+        ])
+        ->latest()
+        ->take(10)
+        ->get();
 
         return view('pimpinan.dashboard', compact(
-            'jumlahMenunggu',
-            'jumlahDisetujui',
-            'jumlahDitolak'
+            'totalSurat',
+            'diajukan',
+            'disetujui',
+            'ditolak',
+            'suratTerbaru'
         ));
     }
 
-    public function suratTugas()
+    /**
+     * Daftar Surat Tugas
+     */
+    public function index()
     {
         $suratTugas = SuratTugas::with([
             'pegawai',
-            'pembuat'
+            'pembuat',
+            'approver',
+            'instansi',
+            'lokasi',
+            'jenisKegiatan',
         ])
-        ->where('status', 'diajukan')
         ->latest()
         ->get();
 
-        return view('pimpinan.surat-tugas.index', compact('suratTugas'));
+        return view('pimpinan.surat-tugas.index', compact(
+            'suratTugas'
+        ));
     }
 
-    public function detailSurat($id)
+    /**
+     * Detail Surat Tugas
+     */
+    public function detail(SuratTugas $suratTugas)
     {
-        $surat = SuratTugas::with([
+        $suratTugas->load([
             'pegawai',
-            'pembuat'
-        ])->findOrFail($id);
+            'pembuat',
+            'approver',
+            'instansi',
+            'lokasi',
+            'jenisKegiatan',
+        ]);
 
-        return view('pimpinan.surat-tugas.detail', compact('surat'));
+        return view(
+            'pimpinan.surat-tugas.detail',
+            compact('suratTugas')
+        );
     }
 
-    public function approve($id)
+    /**
+     * Approve Surat Tugas
+     */
+    public function approve(SuratTugas $suratTugas)
     {
-        $surat = SuratTugas::findOrFail($id);
+        if ($suratTugas->status !== 'diajukan') {
+            return back()->with(
+                'error',
+                'Surat Tugas hanya dapat disetujui jika berstatus diajukan.'
+            );
+        }
 
-        $surat->update([
+        $suratTugas->update([
             'status' => 'disetujui',
             'approved_by' => auth()->id(),
             'approved_at' => now(),
+            'catatan' => null,
         ]);
 
         return redirect()
-            ->route('pimpinan.surat-tugas')
-            ->with('success', 'Surat tugas berhasil disetujui.');
+            ->route('pimpinan.surat-tugas.index')
+            ->with(
+                'success',
+                'Surat Tugas berhasil disetujui.'
+            );
     }
 
-    public function reject(Request $request, $id)
-    {
+    /**
+     * Reject Surat Tugas
+     */
+    public function reject(
+        Request $request,
+        SuratTugas $suratTugas
+    ) {
+        if ($suratTugas->status !== 'diajukan') {
+            return back()->with(
+                'error',
+                'Surat Tugas hanya dapat ditolak jika berstatus diajukan.'
+            );
+        }
+
         $request->validate([
-            'catatan' => 'required|string',
+            'catatan' => 'required|string|max:1000',
         ]);
 
-        $surat = SuratTugas::findOrFail($id);
-
-        $surat->update([
+        $suratTugas->update([
             'status' => 'ditolak',
             'catatan' => $request->catatan,
-            'approved_by' => auth()->id(),
-            'approved_at' => now(),
+            'approved_by' => null,
+            'approved_at' => null,
         ]);
 
         return redirect()
-            ->route('pimpinan.surat-tugas')
-            ->with('success', 'Surat tugas ditolak.');
+            ->route('pimpinan.surat-tugas.index')
+            ->with(
+                'success',
+                'Surat Tugas berhasil ditolak.'
+            );
+    }
+
+    /**
+     * Cetak Surat Tugas
+     */
+    public function cetak(SuratTugas $suratTugas)
+    {
+        if ($suratTugas->status !== 'disetujui') {
+            abort(
+                403,
+                'Surat Tugas belum disetujui dan belum dapat dicetak.'
+            );
+        }
+
+        $suratTugas->load([
+            'pegawai',
+            'pembuat',
+            'approver',
+            'instansi',
+            'lokasi',
+            'jenisKegiatan',
+        ]);
+
+        return view(
+            'admin.surat-tugas.cetak',
+            compact('suratTugas')
+        );
     }
 }

@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('setting_displays', function (Blueprint $table) {
             $table->id();
+
+            $table->string('nama_setting');
+
+            $table->text('nilai')->nullable();
+
             $table->timestamps();
         });
     }
