@@ -9,19 +9,23 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
-            <div class="page-title">Bertugas</div>
+            <div class="page-title">
+                Bertugas
+            </div>
+
             <small class="text-secondary">
                 Kelola surat tugas pegawai
             </small>
         </div>
 
-        <button class="btn-orange"
-                data-bs-toggle="modal"
-                data-bs-target="#tambahSurat">
+        <button class="btn-orange" data-bs-toggle="modal" data-bs-target="#tambahSurat">
+
             + Buat Surat Tugas
+
         </button>
 
     </div>
+
 
     <div class="table-responsive">
 
@@ -30,30 +34,59 @@
             <thead>
 
                 <tr>
+
                     <th>Nomor</th>
                     <th>Kegiatan</th>
                     <th>Pegawai</th>
                     <th>Tanggal</th>
                     <th>Status</th>
+                    <th>Catatan Pimpinan</th>
                     <th>Aksi</th>
+
                 </tr>
 
             </thead>
 
             <tbody>
 
-            @forelse($suratTugas as $surat)
+                @forelse($suratTugas as $surat)
 
                 <tr>
 
-                    <td>{{ $surat->nomor_surat }}</td>
-
-                    <td>{{ $surat->kegiatan }}</td>
-
-                    <td>{{ $surat->pegawai->nama ?? '-' }}</td>
+                    <td>
+                        {{ $surat->nomor_surat }}
+                    </td>
 
                     <td>
+                        {{ $surat->kegiatan }}
+                    </td>
+
+                    <td>
+                        {{ $surat->pegawai->nama ?? '-' }}
+                    </td>
+
+                    <td>
+
+                        @if($surat->tanggal_mulai)
+
                         {{ $surat->tanggal_mulai->format('d/m/Y') }}
+
+                        @else
+
+                        -
+
+                        @endif
+
+                        @if($surat->tanggal_selesai)
+
+                        <br>
+
+                        <small class="text-secondary">
+                            s/d {{ $surat->tanggal_selesai->format('d/m/Y') }}
+                        </small>
+
+                        @endif
+
                     </td>
 
                     <td>
@@ -66,42 +99,95 @@
 
                     <td>
 
-                        <button class="btn-dark-custom"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editSurat{{ $surat->id }}">
-                            Ubah
-                        </button>
+                        @if($surat->catatan)
 
-                        @if(in_array($surat->status, ['draft','ditolak']))
+                        <span title="{{ $surat->catatan }}">
+                            {{ \Illuminate\Support\Str::limit($surat->catatan, 60) }}
+                        </span>
 
-                            <form action="{{ route('admin.surat-tugas.ajukan', $surat) }}"
-                                  method="POST"
-                                  class="d-inline">
+                        @else
 
-                                @csrf
-
-                                <button class="btn-orange">
-                                    Ajukan
-                                </button>
-
-                            </form>
+                        <span class="text-secondary">
+                            -
+                        </span>
 
                         @endif
 
                     </td>
 
+                    <td>
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            {{-- PDF SUDAH ADA --}}
+
+                            @if($surat->dokumen_pdf)
+
+                            <a href="{{ asset('storage/' . $surat->dokumen_pdf) }}" target="_blank"
+                                class="btn-dark-custom text-decoration-none">
+
+                                PDF
+
+                            </a>
+
+                            @else
+
+                            {{-- PDF BELUM ADA --}}
+
+                            @if(in_array($surat->status, ['draft', 'ditolak']))
+
+                            <button type="button" class="btn-orange" data-bs-toggle="modal"
+                                data-bs-target="#updatePdf{{ $surat->id }}">
+
+                                Update
+
+                            </button>
+
+                            @endif
+
+                            @endif
+
+
+                            {{-- AJUKAN HANYA JIKA PDF SUDAH ADA --}}
+
+                            @if(
+                            in_array($surat->status, ['draft', 'ditolak'])
+                            && $surat->dokumen_pdf
+                            )
+
+                            <form action="{{ route('admin.surat-tugas.ajukan', $surat) }}" method="POST" class="m-0">
+
+                                @csrf
+
+                                <button type="submit" class="btn-orange">
+
+                                    Ajukan
+
+                                </button>
+
+                            </form>
+
+                            @endif
+
+                        </div>
+
+                    </td>
+
                 </tr>
 
-            @empty
+                @empty
 
                 <tr>
-                    <td colspan="6"
-                        class="text-center text-secondary py-4">
+
+                    <td colspan="7" class="text-center text-secondary py-4">
+
                         Belum ada surat tugas.
+
                     </td>
+
                 </tr>
 
-            @endforelse
+                @endforelse
 
             </tbody>
 
@@ -112,17 +198,18 @@
 </div>
 
 
-{{-- TAMBAH SURAT --}}
 
-<div class="modal fade" id="tambahSurat" tabindex="-1">
+{{-- ========================================================= --}}
+{{-- MODAL TAMBAH SURAT TUGAS --}}
+{{-- ========================================================= --}}
+
+<div class="modal fade" id="tambahSurat" tabindex="-1" aria-hidden="true">
 
     <div class="modal-dialog modal-xl modal-dialog-centered">
 
         <div class="modal-content">
 
-            <form action="{{ route('admin.surat-tugas.store') }}"
-                  method="POST"
-                  enctype="multipart/form-data">
+            <form action="{{ route('admin.surat-tugas.store') }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
 
@@ -132,12 +219,11 @@
                         Buat Surat Tugas
                     </h5>
 
-                    <button type="button"
-                            class="btn-close btn-close-white"
-                            data-bs-dismiss="modal">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                     </button>
 
                 </div>
+
 
                 <div class="modal-body">
 
@@ -149,12 +235,10 @@
                                 Nomor Surat
                             </label>
 
-                            <input type="text"
-                                   name="nomor_surat"
-                                   class="form-control"
-                                   required>
+                            <input type="text" name="nomor_surat" class="form-control" required>
 
                         </div>
+
 
                         <div class="col-md-6 mb-3">
 
@@ -162,9 +246,7 @@
                                 Pegawai
                             </label>
 
-                            <select name="pegawai_id"
-                                    class="form-select"
-                                    required>
+                            <select name="pegawai_id" class="form-select" required>
 
                                 <option value="">
                                     Pilih Pegawai
@@ -172,9 +254,9 @@
 
                                 @foreach($pegawais as $pegawai)
 
-                                    <option value="{{ $pegawai->id }}">
-                                        {{ $pegawai->nama }} - {{ $pegawai->nip }}
-                                    </option>
+                                <option value="{{ $pegawai->id }}">
+                                    {{ $pegawai->nama }} - {{ $pegawai->nip }}
+                                </option>
 
                                 @endforeach
 
@@ -184,18 +266,17 @@
 
                     </div>
 
+
                     <div class="mb-3">
 
                         <label class="form-label">
                             Kegiatan
                         </label>
 
-                        <input type="text"
-                               name="kegiatan"
-                               class="form-control"
-                               required>
+                        <input type="text" name="kegiatan" class="form-control" required>
 
                     </div>
+
 
                     <div class="row">
 
@@ -205,8 +286,7 @@
                                 Instansi
                             </label>
 
-                            <select name="instansi_id"
-                                    class="form-select">
+                            <select name="instansi_id" class="form-select">
 
                                 <option value="">
                                     Pilih
@@ -214,15 +294,16 @@
 
                                 @foreach($instansi as $item)
 
-                                    <option value="{{ $item->id }}">
-                                        {{ $item->nama }}
-                                    </option>
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama }}
+                                </option>
 
                                 @endforeach
 
                             </select>
 
                         </div>
+
 
                         <div class="col-md-4 mb-3">
 
@@ -230,8 +311,7 @@
                                 Lokasi
                             </label>
 
-                            <select name="lokasi_id"
-                                    class="form-select">
+                            <select name="lokasi_id" class="form-select">
 
                                 <option value="">
                                     Pilih
@@ -239,9 +319,9 @@
 
                                 @foreach($lokasi as $item)
 
-                                    <option value="{{ $item->id }}">
-                                        {{ $item->nama }}
-                                    </option>
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama }}
+                                </option>
 
                                 @endforeach
 
@@ -249,14 +329,14 @@
 
                         </div>
 
+
                         <div class="col-md-4 mb-3">
 
                             <label class="form-label">
                                 Jenis Kegiatan
                             </label>
 
-                            <select name="jenis_kegiatan_id"
-                                    class="form-select">
+                            <select name="jenis_kegiatan_id" class="form-select">
 
                                 <option value="">
                                     Pilih
@@ -264,9 +344,9 @@
 
                                 @foreach($jenisKegiatan as $item)
 
-                                    <option value="{{ $item->id }}">
-                                        {{ $item->nama }}
-                                    </option>
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama }}
+                                </option>
 
                                 @endforeach
 
@@ -275,6 +355,7 @@
                         </div>
 
                     </div>
+
 
                     <div class="row">
 
@@ -284,12 +365,10 @@
                                 Tanggal Mulai
                             </label>
 
-                            <input type="date"
-                                   name="tanggal_mulai"
-                                   class="form-control"
-                                   required>
+                            <input type="date" name="tanggal_mulai" class="form-control" required>
 
                         </div>
+
 
                         <div class="col-md-6 mb-3">
 
@@ -297,13 +376,12 @@
                                 Tanggal Selesai
                             </label>
 
-                            <input type="date"
-                                   name="tanggal_selesai"
-                                   class="form-control">
+                            <input type="date" name="tanggal_selesai" class="form-control">
 
                         </div>
 
                     </div>
+
 
                     <div class="mb-3">
 
@@ -311,13 +389,14 @@
                             Upload PDF
                         </label>
 
-                        <input type="file"
-                               name="dokumen_pdf"
-                               class="form-control"
-                               accept=".pdf"
-                               required>
+                        <input type="file" name="dokumen_pdf" class="form-control" accept=".pdf" required>
+
+                        <small class="text-secondary">
+                            Format PDF, maksimal 10 MB.
+                        </small>
 
                     </div>
+
 
                     <div class="mb-3">
 
@@ -325,24 +404,25 @@
                             Catatan
                         </label>
 
-                        <textarea name="catatan"
-                                  class="form-control"
-                                  rows="3"></textarea>
+                        <textarea name="catatan" class="form-control" rows="3"></textarea>
 
                     </div>
 
                 </div>
 
+
                 <div class="modal-footer">
 
-                    <button type="button"
-                            class="btn-dark-custom"
-                            data-bs-dismiss="modal">
+                    <button type="button" class="btn-dark-custom" data-bs-dismiss="modal">
+
                         Batal
+
                     </button>
 
-                    <button class="btn-orange">
+                    <button type="submit" class="btn-orange">
+
                         Simpan
+
                     </button>
 
                 </div>
@@ -356,82 +436,55 @@
 </div>
 
 
-{{-- EDIT SURAT --}}
+
+{{-- ========================================================= --}}
+{{-- MODAL UPDATE PDF --}}
+{{-- ========================================================= --}}
 
 @foreach($suratTugas as $surat)
 
-@if(in_array($surat->status, ['draft','ditolak']))
+@if(
+!$surat->dokumen_pdf &&
+in_array($surat->status, ['draft', 'ditolak'])
+)
 
-<div class="modal fade"
-     id="editSurat{{ $surat->id }}"
-     tabindex="-1">
+<div class="modal fade" id="updatePdf{{ $surat->id }}" tabindex="-1" aria-hidden="true">
 
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered">
 
         <div class="modal-content">
 
-            <form action="{{ route('admin.surat-tugas.update', $surat) }}"
-                  method="POST"
-                  enctype="multipart/form-data">
+            <form action="{{ route('admin.surat-tugas.update', $surat) }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
+
                 @method('PUT')
+
 
                 <div class="modal-header">
 
                     <h5 class="modal-title">
-                        Ubah Surat Tugas
+                        Update Surat Tugas
                     </h5>
 
-                    <button type="button"
-                            class="btn-close btn-close-white"
-                            data-bs-dismiss="modal">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
                     </button>
 
                 </div>
 
+
                 <div class="modal-body">
 
-                    <div class="row">
+                    <div class="mb-3">
 
-                        <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Nomor Surat
+                        </label>
 
-                            <label class="form-label">
-                                Nomor Surat
-                            </label>
-
-                            <input type="text"
-                                   name="nomor_surat"
-                                   class="form-control"
-                                   value="{{ $surat->nomor_surat }}"
-                                   required>
-
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-
-                            <label class="form-label">
-                                Pegawai
-                            </label>
-
-                            <select name="pegawai_id"
-                                    class="form-select"
-                                    required>
-
-                                @foreach($pegawais as $pegawai)
-
-                                    <option value="{{ $pegawai->id }}"
-                                        @selected($surat->pegawai_id == $pegawai->id)>
-                                        {{ $pegawai->nama }}
-                                    </option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
+                        <input type="text" class="form-control" value="{{ $surat->nomor_surat }}" disabled>
 
                     </div>
+
 
                     <div class="mb-3">
 
@@ -439,164 +492,40 @@
                             Kegiatan
                         </label>
 
-                        <input type="text"
-                               name="kegiatan"
-                               class="form-control"
-                               value="{{ $surat->kegiatan }}"
-                               required>
+                        <input type="text" class="form-control" value="{{ $surat->kegiatan }}" disabled>
 
                     </div>
 
-                    <div class="row">
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label">
-                                Instansi
-                            </label>
-
-                            <select name="instansi_id"
-                                    class="form-select">
-
-                                <option value="">Pilih</option>
-
-                                @foreach($instansi as $item)
-
-                                    <option value="{{ $item->id }}"
-                                        @selected($surat->instansi_id == $item->id)>
-                                        {{ $item->nama }}
-                                    </option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label">
-                                Lokasi
-                            </label>
-
-                            <select name="lokasi_id"
-                                    class="form-select">
-
-                                <option value="">Pilih</option>
-
-                                @foreach($lokasi as $item)
-
-                                    <option value="{{ $item->id }}"
-                                        @selected($surat->lokasi_id == $item->id)>
-                                        {{ $item->nama }}
-                                    </option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-
-                            <label class="form-label">
-                                Jenis Kegiatan
-                            </label>
-
-                            <select name="jenis_kegiatan_id"
-                                    class="form-select">
-
-                                <option value="">Pilih</option>
-
-                                @foreach($jenisKegiatan as $item)
-
-                                    <option value="{{ $item->id }}"
-                                        @selected($surat->jenis_kegiatan_id == $item->id)>
-                                        {{ $item->nama }}
-                                    </option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-md-6 mb-3">
-
-                            <label class="form-label">
-                                Tanggal Mulai
-                            </label>
-
-                            <input type="date"
-                                   name="tanggal_mulai"
-                                   class="form-control"
-                                   value="{{ $surat->tanggal_mulai->format('Y-m-d') }}"
-                                   required>
-
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-
-                            <label class="form-label">
-                                Tanggal Selesai
-                            </label>
-
-                            <input type="date"
-                                   name="tanggal_selesai"
-                                   class="form-control"
-                                   value="{{ $surat->tanggal_selesai?->format('Y-m-d') }}">
-
-                        </div>
-
-                    </div>
 
                     <div class="mb-3">
 
                         <label class="form-label">
-                            Ganti PDF
+                            Upload PDF
                         </label>
 
-                        <input type="file"
-                               name="dokumen_pdf"
-                               class="form-control"
-                               accept=".pdf">
+                        <input type="file" name="dokumen_pdf" class="form-control" accept=".pdf" required>
 
-                        @if($surat->dokumen_pdf)
-                            <small class="text-secondary">
-                                PDF sudah tersedia. Kosongkan jika tidak ingin mengganti.
-                            </small>
-                        @endif
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Catatan
-                        </label>
-
-                        <textarea name="catatan"
-                                  class="form-control"
-                                  rows="3">{{ $surat->catatan }}</textarea>
+                        <small class="text-secondary">
+                            Format PDF, maksimal 10 MB.
+                        </small>
 
                     </div>
 
                 </div>
 
+
                 <div class="modal-footer">
 
-                    <button type="button"
-                            class="btn-dark-custom"
-                            data-bs-dismiss="modal">
+                    <button type="button" class="btn-dark-custom" data-bs-dismiss="modal">
+
                         Batal
+
                     </button>
 
-                    <button class="btn-orange">
+                    <button type="submit" class="btn-orange">
+
                         Simpan
+
                     </button>
 
                 </div>

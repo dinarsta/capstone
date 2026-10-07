@@ -12,22 +12,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-    /* =====================================================
-           GLOBAL
-        ===================================================== */
-
     * {
         box-sizing: border-box;
     }
 
     body {
-        background: #000000 !important;
-        color: #ffffff !important;
+        margin: 0;
+        background: #000;
+        color: #fff;
         font-family: Arial, sans-serif;
         font-size: 14px;
     }
 
-    /* Paksa teks Bootstrap menjadi putih */
     body,
     p,
     span,
@@ -41,7 +37,7 @@
     h6,
     strong,
     a {
-        color: #ffffff;
+        color: #fff;
     }
 
 
@@ -52,47 +48,39 @@
     .sidebar {
         width: 220px;
         min-height: 100vh;
-        background: #000000 !important;
-
         position: fixed;
-        left: 0;
         top: 0;
-
+        left: 0;
         padding: 20px 15px;
-
-        border-right: 1px solid #222222;
+        background: #000;
+        border-right: 1px solid #222;
     }
 
     .sidebar h4 {
-        color: #ffffff !important;
+        margin-bottom: 25px;
+        color: #fff;
         font-size: 18px;
         font-weight: 700;
-
-        margin-bottom: 25px;
     }
 
     .sidebar a {
         display: block;
-
-        color: #ffffff !important;
-        text-decoration: none;
-
         padding: 10px 13px;
         margin-bottom: 4px;
-
+        color: #fff;
+        text-decoration: none;
         border-radius: 7px;
-
         transition: .2s;
     }
 
     .sidebar a:hover {
-        background: #222222 !important;
-        color: #ffffff !important;
+        background: #222;
+        color: #fff;
     }
 
     .sidebar a.active {
-        background: #dc5f00 !important;
-        color: #ffffff !important;
+        background: #dc5f00;
+        color: #fff;
     }
 
 
@@ -101,13 +89,11 @@
         ===================================================== */
 
     .content {
-        margin-left: 220px;
-
+        width: calc(100% - 220px);
         min-height: 100vh;
-
+        margin-left: 220px;
         padding: 22px;
-
-        background: #000000 !important;
+        background: #000;
     }
 
 
@@ -116,28 +102,20 @@
         ===================================================== */
 
     .topbar {
-        background: #000000 !important;
-
-        border: 1px solid #222222;
-
-        border-radius: 10px;
-
         padding: 15px 18px;
-
         margin-bottom: 18px;
+        background: #000;
+        border: 1px solid #222;
+        border-radius: 10px;
     }
 
     .topbar h3 {
-        color: #ffffff !important;
-
+        margin: 0;
         font-size: 20px;
-
         font-weight: 700;
     }
 
     .topbar small {
-        color: #ffffff !important;
-
         opacity: .8;
     }
 
@@ -147,156 +125,100 @@
         ===================================================== */
 
     .card-custom {
-        background: #000000 !important;
-
-        color: #ffffff !important;
-
-        border: 1px solid #222222;
-
-        border-radius: 10px;
-
         padding: 18px;
-
         margin-bottom: 18px;
-
-        box-shadow: none;
+        background: #000;
+        color: #fff;
+        border: 1px solid #222;
+        border-radius: 10px;
     }
 
     .card-custom h5 {
-        color: #ffffff !important;
-
         font-size: 16px;
-
         font-weight: 600;
     }
 
 
     /* =====================================================
-           LABEL & VALUE
+           LABEL
         ===================================================== */
 
     .label {
-        color: #ffffff !important;
-
-        font-size: 12px;
-
-        font-weight: 500;
-
         margin-bottom: 4px;
+        color: #aaa;
+        font-size: 12px;
+        font-weight: 500;
     }
 
     .value {
-        color: #ffffff !important;
-
-        font-size: 14px;
-
-        font-weight: 600;
-
         margin-bottom: 15px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
     }
 
 
     /* =====================================================
-           BUTTON ORANGE
+           BUTTON
         ===================================================== */
 
     .btn-orange {
-        background: #dc5f00 !important;
-
-        color: #ffffff !important;
-
-        border: 1px solid #dc5f00 !important;
-
-        font-size: 13px;
-
         padding: 7px 13px;
-
+        color: #fff !important;
+        background: #dc5f00 !important;
+        border: 1px solid #dc5f00 !important;
         border-radius: 7px;
+        font-size: 13px;
     }
 
     .btn-orange:hover {
+        color: #fff !important;
         background: #b94f00 !important;
-
         border-color: #b94f00 !important;
-
-        color: #ffffff !important;
     }
 
-
-    /* =====================================================
-           OUTLINE BUTTON
-        ===================================================== */
-
     .btn-outline-secondary,
-    .btn-outline-dark,
     .btn-outline-light {
-        background: #000000 !important;
-
-        color: #ffffff !important;
-
-        border: 1px solid #444444 !important;
-
-        font-size: 13px;
-
         padding: 7px 13px;
-
+        color: #fff !important;
+        background: #000 !important;
+        border: 1px solid #444 !important;
         border-radius: 7px;
+        font-size: 13px;
     }
 
     .btn-outline-secondary:hover,
-    .btn-outline-dark:hover,
     .btn-outline-light:hover {
-        background: #222222 !important;
-
-        border-color: #666666 !important;
-
-        color: #ffffff !important;
+        color: #fff !important;
+        background: #222 !important;
+        border-color: #666 !important;
     }
 
 
     /* =====================================================
-           ALL BUTTON
-        ===================================================== */
-
-    .btn {
-        color: #ffffff !important;
-    }
-
-
-    /* =====================================================
-           STATUS BADGE
+           STATUS
         ===================================================== */
 
     .badge {
-        color: #ffffff !important;
-
-        font-size: 11px;
-
         padding: 6px 10px;
+        color: #fff !important;
+        font-size: 11px;
     }
 
     .badge.bg-warning {
         background: #dc5f00 !important;
-
-        color: #ffffff !important;
     }
 
     .badge.bg-success {
         background: #198754 !important;
-
-        color: #ffffff !important;
     }
 
     .badge.bg-danger {
         background: #8f2525 !important;
-
-        color: #ffffff !important;
     }
 
     .badge.bg-secondary {
-        background: #333333 !important;
-
-        color: #ffffff !important;
+        background: #333 !important;
     }
 
 
@@ -306,26 +228,17 @@
 
     .pdf-container {
         width: 100%;
-
         height: 550px;
-
-        background: #000000 !important;
-
-        border: 1px solid #222222;
-
-        border-radius: 8px;
-
         overflow: hidden;
+        background: #000;
+        border: 1px solid #222;
+        border-radius: 8px;
     }
 
     .pdf-container iframe {
         width: 100%;
-
         height: 100%;
-
-        border: none;
-
-        background: #000000;
+        border: 0;
     }
 
 
@@ -334,26 +247,12 @@
         ===================================================== */
 
     .alert {
-        background: #000000 !important;
-
-        color: #ffffff !important;
-
-        border: 1px solid #333333 !important;
-    }
-
-    .alert-secondary {
-        background: #000000 !important;
-
-        color: #ffffff !important;
-
-        border-color: #333333 !important;
+        color: #fff !important;
+        background: #000 !important;
+        border: 1px solid #333 !important;
     }
 
     .alert-warning {
-        background: #000000 !important;
-
-        color: #ffffff !important;
-
         border-color: #dc5f00 !important;
     }
 
@@ -363,35 +262,28 @@
         ===================================================== */
 
     .modal-content {
-        background: #000000 !important;
-
-        color: #ffffff !important;
-
-        border: 1px solid #333333 !important;
+        color: #fff;
+        background: #000;
+        border: 1px solid #333;
     }
 
     .modal-header {
-        background: #000000 !important;
-
-        border-bottom: 1px solid #333333 !important;
+        background: #000;
+        border-bottom: 1px solid #333;
     }
 
     .modal-footer {
-        background: #000000 !important;
-
-        border-top: 1px solid #333333 !important;
+        background: #000;
+        border-top: 1px solid #333;
     }
 
     .modal-title {
-        color: #ffffff !important;
-
+        color: #fff;
         font-size: 16px;
     }
 
     .btn-close {
         filter: invert(1);
-
-        opacity: 1;
     }
 
 
@@ -400,68 +292,36 @@
         ===================================================== */
 
     .form-label {
-        color: #ffffff !important;
-
+        color: #fff;
         font-size: 13px;
-
         font-weight: 500;
     }
 
-    .form-control,
-    .form-select {
-        background: #000000 !important;
-
-        color: #ffffff !important;
-
-        border: 1px solid #444444 !important;
-
-        font-size: 13px;
-
+    .form-control {
+        color: #fff !important;
+        background: #000 !important;
+        border: 1px solid #444 !important;
         border-radius: 7px;
     }
 
-    .form-control:focus,
-    .form-select:focus {
-        background: #000000 !important;
-
-        color: #ffffff !important;
-
+    .form-control:focus {
+        color: #fff !important;
+        background: #000 !important;
         border-color: #dc5f00 !important;
-
         box-shadow: 0 0 0 .15rem rgba(220, 95, 0, .15);
     }
 
     .form-control::placeholder {
-        color: #ffffff !important;
-
-        opacity: .6;
-    }
-
-    .form-select option {
-        background: #000000;
-
-        color: #ffffff;
+        color: #aaa !important;
     }
 
 
     /* =====================================================
-           LOGOUT
+           PRINT DOCUMENT
         ===================================================== */
 
-    .btn-danger {
-        background: #8f2525 !important;
-
-        border-color: #8f2525 !important;
-
-        color: #ffffff !important;
-    }
-
-    .btn-danger:hover {
-        background: #a82d2d !important;
-
-        border-color: #a82d2d !important;
-
-        color: #ffffff !important;
+    .print-document {
+        display: none;
     }
 
 
@@ -473,31 +333,20 @@
 
         .sidebar {
             width: 100%;
-
             min-height: auto;
-
             position: relative;
-
-            border-right: none;
-
-            border-bottom: 1px solid #222222;
+            padding: 15px;
+            border-right: 0;
+            border-bottom: 1px solid #222;
         }
 
         .sidebar h4 {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
 
         .content {
+            width: 100%;
             margin-left: 0;
-
-            padding: 15px;
-        }
-
-        .topbar {
-            padding: 14px;
-        }
-
-        .card-custom {
             padding: 15px;
         }
 
@@ -514,73 +363,212 @@
 
     @media print {
 
-        body {
-            background: #ffffff !important;
-
-            color: #000000 !important;
+        @page {
+            size: A4;
+            margin: 18mm 20mm 18mm 20mm;
         }
+
+        html,
+        body {
+            width: 100% !important;
+            min-height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #fff !important;
+            color: #000 !important;
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif !important;
+        }
+
+        /*
+             * Jangan gunakan body * { visibility:hidden }
+             * karena bisa membuat hasil print kosong.
+             */
 
         .sidebar,
         .topbar,
-        .no-print,
-        .btn,
+        .card-custom,
+        .pdf-container,
         .modal,
-        .pdf-container {
+        .no-print {
             display: none !important;
         }
 
         .content {
-            margin-left: 0 !important;
-
+            display: block !important;
+            width: 100% !important;
+            min-height: auto !important;
+            margin: 0 !important;
             padding: 0 !important;
-
-            background: #ffffff !important;
+            background: #fff !important;
         }
 
-        .card-custom {
-            background: #ffffff !important;
-
-            color: #000000 !important;
-
-            border: none !important;
-
-            box-shadow: none !important;
-
+        .print-document {
+            display: block !important;
+            position: relative !important;
+            width: 100% !important;
+            margin: 0 !important;
             padding: 0 !important;
+            background: #fff !important;
+            color: #000 !important;
+            font-family: "Times New Roman", Times, serif !important;
+            font-size: 12pt;
+            line-height: 1.5;
         }
 
-        .card-custom h5,
-        .label,
-        .value,
-        .card-custom span,
-        .card-custom strong {
-            color: #000000 !important;
+        .print-document * {
+            color: #000 !important;
         }
 
-        .badge {
-            color: #000000 !important;
 
-            background: #ffffff !important;
+        /* =================================================
+               KOP SURAT
+            ================================================= */
 
-            border: 1px solid #000000;
+        .print-header {
+            width: 100%;
+            display: flex !important;
+            align-items: center;
+            gap: 18px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #000;
         }
+
+        .print-logo {
+            display: block !important;
+            width: 78px !important;
+            height: 78px !important;
+            object-fit: contain !important;
+            flex-shrink: 0;
+        }
+
+        .print-header-text {
+            flex: 1;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .print-header-text .instansi-atas {
+            font-size: 12pt;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .print-header-text .instansi {
+            margin-top: 2px;
+            font-size: 16pt;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .print-header-text .alamat {
+            margin-top: 5px;
+            font-size: 9.5pt;
+            line-height: 1.3;
+        }
+
+
+        /* =================================================
+               JUDUL
+            ================================================= */
 
         .print-title {
             display: block !important;
-
-            color: #000000 !important;
-
-            margin-bottom: 20px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            text-align: center;
         }
 
-        .print-section {
-            page-break-inside: avoid;
+        .print-title h1 {
+            margin: 0;
+            font-size: 16pt;
+            font-weight: bold;
+            text-decoration: underline;
         }
 
-    }
+        .print-title .nomor {
+            margin-top: 5px;
+            font-size: 12pt;
+        }
 
-    .print-title {
-        display: none;
+
+        /* =================================================
+               ISI
+            ================================================= */
+
+        .print-opening {
+            margin-bottom: 18px;
+            text-align: justify;
+        }
+
+        .print-table {
+            width: 100%;
+            margin: 10px 0 20px;
+            border-collapse: collapse;
+        }
+
+        .print-table td {
+            padding: 3px 0;
+            vertical-align: top;
+        }
+
+        .print-table .label-col {
+            width: 160px;
+        }
+
+        .print-table .separator-col {
+            width: 15px;
+            text-align: center;
+        }
+
+        .print-closing {
+            margin-top: 20px;
+            text-align: justify;
+        }
+
+
+        /* =================================================
+               CATATAN
+            ================================================= */
+
+        .print-catatan {
+            margin-top: 20px;
+            padding-top: 8px;
+            border-top: 1px solid #000;
+            font-size: 10pt;
+        }
+
+
+        /* =================================================
+               TANDA TANGAN
+            ================================================= */
+
+        .print-signature {
+            width: 42%;
+            margin-top: 55px;
+            margin-left: auto;
+            text-align: center;
+        }
+
+        .print-signature .tempat-tanggal {
+            margin-bottom: 3px;
+        }
+
+        .print-signature .jabatan {
+            margin-bottom: 65px;
+        }
+
+        .print-signature .nama {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .print-signature .nip {
+            margin-top: 2px;
+        }
+
     }
     </style>
 
@@ -644,7 +632,9 @@
     <div class="content">
 
 
-        {{-- TOPBAR --}}
+        {{-- =================================================
+             TOPBAR
+        ================================================== --}}
 
         <div class="topbar no-print">
 
@@ -652,12 +642,12 @@
 
                 <div>
 
-                    <h3 class="mb-1">
+                    <h3>
                         Detail Surat Tugas
                     </h3>
 
                     <small>
-                        Validasi Surat Tugas
+                        Validasi dan lihat dokumen surat tugas
                     </small>
 
                 </div>
@@ -675,16 +665,304 @@
 
 
         {{-- =================================================
-             JUDUL CETAK
+             PRINT DOCUMENT
         ================================================== --}}
 
-        <div class="print-title">
+        <div class="print-document">
 
-            <h2 class="text-center">
-                SURAT TUGAS
-            </h2>
 
-            <hr>
+            {{-- KOP SURAT --}}
+
+            <div class="print-header">
+
+                <img src="{{ asset('logo.png') }}" class="print-logo" alt="Logo">
+
+
+                <div class="print-header-text">
+
+                    <div class="instansi-atas">
+                        {{ strtoupper($suratTugas->instansi->nama ?? 'INSTANSI') }}
+                    </div>
+
+                    <div class="instansi">
+                        SURAT TUGAS
+                    </div>
+
+                    <div class="alamat">
+                        Dokumen Resmi Surat Tugas
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- JUDUL --}}
+
+            <div class="print-title">
+
+                <h1>
+                    SURAT TUGAS
+                </h1>
+
+                <div class="nomor">
+                    Nomor:
+                    {{ $suratTugas->nomor_surat }}
+                </div>
+
+            </div>
+
+
+            {{-- ISI SURAT --}}
+
+            <div class="print-body">
+
+
+                <div class="print-opening">
+
+                    Dalam rangka pelaksanaan kegiatan
+
+                    <strong>
+                        {{ $suratTugas->kegiatan }}
+                    </strong>,
+
+                    dengan ini menugaskan kepada:
+
+                </div>
+
+
+                {{-- DATA PEGAWAI --}}
+
+                <table class="print-table">
+
+                    <tr>
+
+                        <td class="label-col">
+                            Nama
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+                            {{ $suratTugas->pegawai->nama ?? '-' }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="label-col">
+                            NIP
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+                            {{ $suratTugas->pegawai->nip ?? '-' }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="label-col">
+                            Jabatan
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+                            {{ $suratTugas->pegawai->jabatan ?? '-' }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="label-col">
+                            Unit Kerja
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+                            {{ $suratTugas->pegawai->unit_kerja ?? '-' }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="label-col">
+                            Pangkat/Golongan
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+                            {{ $suratTugas->pegawai->pangkat ?? '-' }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="label-col">
+                            Instansi
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+                            {{ $suratTugas->instansi->nama ?? '-' }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="label-col">
+                            Lokasi
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+                            {{ $suratTugas->lokasi->nama ?? '-' }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="label-col">
+                            Jenis Kegiatan
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+                            {{ $suratTugas->jenisKegiatan->nama ?? '-' }}
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="label-col">
+                            Tanggal Pelaksanaan
+                        </td>
+
+                        <td class="separator-col">
+                            :
+                        </td>
+
+                        <td>
+
+                            {{ $suratTugas->tanggal_mulai?->format('d/m/Y') ?? '-' }}
+
+                            @if($suratTugas->tanggal_selesai)
+
+                            s.d.
+                            {{ $suratTugas->tanggal_selesai->format('d/m/Y') }}
+
+                            @endif
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+
+                <div class="print-closing">
+
+                    Demikian Surat Tugas ini dibuat untuk dapat
+                    dilaksanakan dengan penuh tanggung jawab
+                    sesuai dengan tugas dan kegiatan yang telah
+                    ditetapkan.
+
+                </div>
+
+
+                {{-- CATATAN --}}
+
+                @if($suratTugas->catatan)
+
+                <div class="print-catatan">
+
+                    <strong>
+                        Catatan:
+                    </strong>
+
+                    <br>
+
+                    {{ $suratTugas->catatan }}
+
+                </div>
+
+                @endif
+
+
+                {{-- TANDA TANGAN --}}
+
+                <div class="print-signature">
+
+                    <div class="tempat-tanggal">
+
+                        Jakarta,
+                        {{ now()->format('d/m/Y') }}
+
+                    </div>
+
+
+                    <div class="jabatan">
+
+                        Pimpinan
+
+                    </div>
+
+
+                    <div class="nama">
+
+                        {{ $suratTugas->approver->name ?? 'Siti Aminah' }}
+
+                    </div>
+
+
+                    <div class="nip">
+
+                        NIP. ______________________
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -693,8 +971,7 @@
              INFORMASI SURAT
         ================================================== --}}
 
-        <div class="card-custom print-section">
-
+        <div class="card-custom no-print">
 
             <div class="d-flex justify-content-between align-items-center mb-3">
 
@@ -739,7 +1016,6 @@
 
                 <div class="col-md-6">
 
-
                     <div class="label">
                         Nomor Surat
                     </div>
@@ -781,7 +1057,6 @@
                 {{-- KANAN --}}
 
                 <div class="col-md-6">
-
 
                     <div class="label">
                         Instansi
@@ -832,8 +1107,6 @@
             </div>
 
 
-            {{-- CATATAN --}}
-
             @if($suratTugas->catatan)
 
             <div class="alert alert-secondary mb-0">
@@ -858,7 +1131,6 @@
         ================================================== --}}
 
         <div class="card-custom no-print">
-
 
             <div class="d-flex justify-content-between align-items-center mb-3">
 
@@ -916,15 +1188,17 @@
             </h5>
 
             <p class="mb-3">
+
                 Silakan melakukan persetujuan atau penolakan
                 terhadap Surat Tugas ini.
+
             </p>
 
 
             <div class="d-flex gap-2">
 
 
-                {{-- APPROVE --}}
+                {{-- SETUJUI --}}
 
                 <form action="{{ route('pimpinan.surat-tugas.approve', $suratTugas->id) }}" method="POST">
 
@@ -940,7 +1214,7 @@
                 </form>
 
 
-                {{-- REJECT --}}
+                {{-- TOLAK --}}
 
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalTolak">
 
@@ -1003,13 +1277,10 @@
 
             <div class="modal-content">
 
-
                 <form action="{{ route('pimpinan.surat-tugas.reject', $suratTugas->id) }}" method="POST">
 
                     @csrf
 
-
-                    {{-- HEADER --}}
 
                     <div class="modal-header">
 
@@ -1023,21 +1294,17 @@
                     </div>
 
 
-                    {{-- BODY --}}
-
                     <div class="modal-body">
 
                         <label class="form-label">
                             Alasan Penolakan
                         </label>
 
-                        <textarea name="catatan" class="form-control" rows="3" required
+                        <textarea name="catatan" class="form-control" rows="4" required
                             placeholder="Masukkan alasan penolakan..."></textarea>
 
                     </div>
 
-
-                    {{-- FOOTER --}}
 
                     <div class="modal-footer">
 
@@ -1074,15 +1341,16 @@
 
 
     {{-- =====================================================
-         CETAK JAVASCRIPT
+         CETAK
     ====================================================== --}}
 
     <script>
     function cetakSurat() {
+
         window.print();
+
     }
     </script>
-
 
 </body>
 
