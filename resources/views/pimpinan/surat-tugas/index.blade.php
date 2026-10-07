@@ -221,10 +221,6 @@
             Surat Tugas
         </a>
 
-        <a href="{{ route('display') }}" target="_blank">
-            TV Display
-        </a>
-
         <form action="{{ route('logout') }}" method="POST" class="mt-3">
             @csrf
 

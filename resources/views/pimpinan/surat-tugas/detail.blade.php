@@ -2,7 +2,9 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Detail Surat Tugas</title>
@@ -10,255 +12,511 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-    body {
-        background: #121212;
-        font-family: Arial, sans-serif;
-        color: #f1f1f1;
+    /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+    * {
+        box-sizing: border-box;
     }
 
-    /* SIDEBAR */
+    body {
+        background: #000000 !important;
+        color: #ffffff !important;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+
+    /* Paksa teks Bootstrap menjadi putih */
+    body,
+    p,
+    span,
+    small,
+    label,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    a {
+        color: #ffffff;
+    }
+
+
+    /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
     .sidebar {
-        width: 250px;
+        width: 220px;
         min-height: 100vh;
-        background: #0d0d0d;
+        background: #000000 !important;
+
         position: fixed;
         left: 0;
         top: 0;
-        padding: 25px 18px;
-        border-right: 1px solid #292929;
+
+        padding: 20px 15px;
+
+        border-right: 1px solid #222222;
     }
 
     .sidebar h4 {
-        color: #ffffff;
-        margin-bottom: 35px;
+        color: #ffffff !important;
+        font-size: 18px;
         font-weight: 700;
+
+        margin-bottom: 25px;
     }
 
     .sidebar a {
         display: block;
-        color: #b8b8b8;
+
+        color: #ffffff !important;
         text-decoration: none;
-        padding: 12px 15px;
-        border-radius: 8px;
-        margin-bottom: 5px;
+
+        padding: 10px 13px;
+        margin-bottom: 4px;
+
+        border-radius: 7px;
+
         transition: .2s;
     }
 
-    .sidebar a:hover,
+    .sidebar a:hover {
+        background: #222222 !important;
+        color: #ffffff !important;
+    }
+
     .sidebar a.active {
-        background: #dc5f00;
-        color: #ffffff;
+        background: #dc5f00 !important;
+        color: #ffffff !important;
     }
 
-    /* CONTENT */
+
+    /* =====================================================
+           CONTENT
+        ===================================================== */
+
     .content {
-        margin-left: 250px;
-        padding: 30px;
+        margin-left: 220px;
+
+        min-height: 100vh;
+
+        padding: 22px;
+
+        background: #000000 !important;
     }
 
-    /* TOPBAR */
+
+    /* =====================================================
+           TOPBAR
+        ===================================================== */
+
     .topbar {
-        background: #1b1b1b;
-        border: 1px solid #292929;
-        border-radius: 12px;
-        padding: 20px 25px;
-        margin-bottom: 25px;
+        background: #000000 !important;
+
+        border: 1px solid #222222;
+
+        border-radius: 10px;
+
+        padding: 15px 18px;
+
+        margin-bottom: 18px;
     }
 
     .topbar h3 {
-        color: #ffffff;
+        color: #ffffff !important;
+
+        font-size: 20px;
+
         font-weight: 700;
     }
 
     .topbar small {
-        color: #999 !important;
+        color: #ffffff !important;
+
+        opacity: .8;
     }
 
-    /* CARD */
+
+    /* =====================================================
+           CARD
+        ===================================================== */
+
     .card-custom {
-        background: #1b1b1b;
-        border: 1px solid #292929;
-        border-radius: 12px;
-        padding: 25px;
-        margin-bottom: 25px;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, .25);
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        border: 1px solid #222222;
+
+        border-radius: 10px;
+
+        padding: 18px;
+
+        margin-bottom: 18px;
+
+        box-shadow: none;
     }
 
     .card-custom h5 {
-        color: #ffffff;
-    }
+        color: #ffffff !important;
 
-    /* LABEL */
-    .label {
-        color: #999;
-        font-size: 13px;
-        margin-bottom: 5px;
-    }
+        font-size: 16px;
 
-    /* VALUE */
-    .value {
         font-weight: 600;
-        color: #eeeeee;
-        margin-bottom: 20px;
     }
 
-    /* BUTTON ORANGE */
+
+    /* =====================================================
+           LABEL & VALUE
+        ===================================================== */
+
+    .label {
+        color: #ffffff !important;
+
+        font-size: 12px;
+
+        font-weight: 500;
+
+        margin-bottom: 4px;
+    }
+
+    .value {
+        color: #ffffff !important;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        margin-bottom: 15px;
+    }
+
+
+    /* =====================================================
+           BUTTON ORANGE
+        ===================================================== */
+
     .btn-orange {
-        background: #dc5f00;
-        color: #ffffff;
-        border: none;
+        background: #dc5f00 !important;
+
+        color: #ffffff !important;
+
+        border: 1px solid #dc5f00 !important;
+
+        font-size: 13px;
+
+        padding: 7px 13px;
+
+        border-radius: 7px;
     }
 
     .btn-orange:hover {
-        background: #b94f00;
-        color: #ffffff;
+        background: #b94f00 !important;
+
+        border-color: #b94f00 !important;
+
+        color: #ffffff !important;
     }
 
-    /* OUTLINE BUTTON */
-    .btn-outline-secondary {
-        color: #bbbbbb;
-        border-color: #555555;
+
+    /* =====================================================
+           OUTLINE BUTTON
+        ===================================================== */
+
+    .btn-outline-secondary,
+    .btn-outline-dark,
+    .btn-outline-light {
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        border: 1px solid #444444 !important;
+
+        font-size: 13px;
+
+        padding: 7px 13px;
+
+        border-radius: 7px;
     }
 
-    .btn-outline-secondary:hover {
-        background: #333333;
-        border-color: #666666;
-        color: #ffffff;
+    .btn-outline-secondary:hover,
+    .btn-outline-dark:hover,
+    .btn-outline-light:hover {
+        background: #222222 !important;
+
+        border-color: #666666 !important;
+
+        color: #ffffff !important;
     }
 
-    .btn-outline-dark {
-        color: #dddddd;
-        border-color: #555555;
+
+    /* =====================================================
+           ALL BUTTON
+        ===================================================== */
+
+    .btn {
+        color: #ffffff !important;
     }
 
-    .btn-outline-dark:hover {
-        background: #333333;
-        border-color: #666666;
-        color: #ffffff;
+
+    /* =====================================================
+           STATUS BADGE
+        ===================================================== */
+
+    .badge {
+        color: #ffffff !important;
+
+        font-size: 11px;
+
+        padding: 6px 10px;
     }
 
-    /* PDF */
+    .badge.bg-warning {
+        background: #dc5f00 !important;
+
+        color: #ffffff !important;
+    }
+
+    .badge.bg-success {
+        background: #198754 !important;
+
+        color: #ffffff !important;
+    }
+
+    .badge.bg-danger {
+        background: #8f2525 !important;
+
+        color: #ffffff !important;
+    }
+
+    .badge.bg-secondary {
+        background: #333333 !important;
+
+        color: #ffffff !important;
+    }
+
+
+    /* =====================================================
+           PDF
+        ===================================================== */
+
     .pdf-container {
         width: 100%;
-        height: 650px;
-        border: 1px solid #333333;
+
+        height: 550px;
+
+        background: #000000 !important;
+
+        border: 1px solid #222222;
+
         border-radius: 8px;
+
         overflow: hidden;
-        background: #242424;
     }
 
     .pdf-container iframe {
         width: 100%;
+
         height: 100%;
+
         border: none;
+
+        background: #000000;
     }
 
-    /* ALERT */
+
+    /* =====================================================
+           ALERT
+        ===================================================== */
+
+    .alert {
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        border: 1px solid #333333 !important;
+    }
+
     .alert-secondary {
-        background: #242424;
-        border: 1px solid #3a3a3a;
-        color: #cccccc;
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        border-color: #333333 !important;
     }
 
     .alert-warning {
-        background: #3a2d16;
-        border: 1px solid #6b5225;
-        color: #f0c674;
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        border-color: #dc5f00 !important;
     }
 
-    /* MODAL */
+
+    /* =====================================================
+           MODAL
+        ===================================================== */
+
     .modal-content {
-        background: #1b1b1b;
-        color: #eeeeee;
-        border: 1px solid #333333;
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        border: 1px solid #333333 !important;
     }
 
     .modal-header {
-        border-bottom: 1px solid #333333;
+        background: #000000 !important;
+
+        border-bottom: 1px solid #333333 !important;
     }
 
     .modal-footer {
-        border-top: 1px solid #333333;
+        background: #000000 !important;
+
+        border-top: 1px solid #333333 !important;
     }
 
     .modal-title {
-        color: #ffffff;
+        color: #ffffff !important;
+
+        font-size: 16px;
     }
 
     .btn-close {
         filter: invert(1);
+
+        opacity: 1;
     }
+
+
+    /* =====================================================
+           FORM
+        ===================================================== */
 
     .form-label {
-        color: #dddddd;
+        color: #ffffff !important;
+
+        font-size: 13px;
+
+        font-weight: 500;
     }
 
-    .form-control {
-        background: #242424;
-        border: 1px solid #444444;
-        color: #ffffff;
+    .form-control,
+    .form-select {
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        border: 1px solid #444444 !important;
+
+        font-size: 13px;
+
+        border-radius: 7px;
     }
 
-    .form-control:focus {
-        background: #242424;
-        border-color: #dc5f00;
-        color: #ffffff;
-        box-shadow: 0 0 0 .2rem rgba(220, 95, 0, .15);
+    .form-control:focus,
+    .form-select:focus {
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        border-color: #dc5f00 !important;
+
+        box-shadow: 0 0 0 .15rem rgba(220, 95, 0, .15);
     }
 
     .form-control::placeholder {
-        color: #777777;
+        color: #ffffff !important;
+
+        opacity: .6;
     }
 
-    /* LOGOUT */
+    .form-select option {
+        background: #000000;
+
+        color: #ffffff;
+    }
+
+
+    /* =====================================================
+           LOGOUT
+        ===================================================== */
+
     .btn-danger {
-        background: #8f2525;
-        border-color: #8f2525;
+        background: #8f2525 !important;
+
+        border-color: #8f2525 !important;
+
+        color: #ffffff !important;
     }
 
     .btn-danger:hover {
-        background: #a82d2d;
-        border-color: #a82d2d;
+        background: #a82d2d !important;
+
+        border-color: #a82d2d !important;
+
+        color: #ffffff !important;
     }
 
-    /* RESPONSIVE */
+
+    /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
     @media (max-width: 768px) {
 
         .sidebar {
             width: 100%;
+
             min-height: auto;
+
             position: relative;
+
             border-right: none;
-            border-bottom: 1px solid #292929;
+
+            border-bottom: 1px solid #222222;
         }
 
         .sidebar h4 {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .content {
             margin-left: 0;
-            padding: 20px;
+
+            padding: 15px;
         }
 
         .topbar {
-            padding: 18px;
+            padding: 14px;
         }
 
         .card-custom {
-            padding: 18px;
+            padding: 15px;
         }
 
         .pdf-container {
-            height: 500px;
+            height: 400px;
         }
+
     }
 
-    /* PRINT */
+
+    /* =====================================================
+           PRINT
+        ===================================================== */
+
     @media print {
 
         body {
             background: #ffffff !important;
+
             color: #000000 !important;
         }
 
@@ -273,84 +531,124 @@
 
         .content {
             margin-left: 0 !important;
+
             padding: 0 !important;
+
+            background: #ffffff !important;
         }
 
         .card-custom {
             background: #ffffff !important;
+
             color: #000000 !important;
+
             border: none !important;
+
             box-shadow: none !important;
+
             padding: 0 !important;
         }
 
-        .label {
-            color: #555555 !important;
-        }
-
-        .value {
+        .card-custom h5,
+        .label,
+        .value,
+        .card-custom span,
+        .card-custom strong {
             color: #000000 !important;
         }
 
         .badge {
-            border: 1px solid #000000;
             color: #000000 !important;
+
             background: #ffffff !important;
+
+            border: 1px solid #000000;
         }
 
         .print-title {
             display: block !important;
-            margin-bottom: 25px;
+
+            color: #000000 !important;
+
+            margin-bottom: 20px;
         }
 
         .print-section {
             page-break-inside: avoid;
         }
+
     }
 
     .print-title {
         display: none;
     }
     </style>
+
 </head>
+
 
 <body>
 
-    {{-- SIDEBAR --}}
+
+    {{-- =====================================================
+         SIDEBAR
+    ====================================================== --}}
+
     <div class="sidebar no-print">
 
-        <h4>Panel Pimpinan</h4>
+        <h4>
+            Panel Pimpinan
+        </h4>
+
 
         <a href="{{ route('pimpinan.dashboard') }}">
+
             Dashboard
+
         </a>
+
 
         <a href="{{ route('pimpinan.surat-tugas.index') }}" class="active">
+
             Surat Tugas
+
         </a>
+
 
         <a href="{{ route('display') }}" target="_blank">
+
             TV Display
+
         </a>
 
+
         <form action="{{ route('logout') }}" method="POST" class="mt-3">
+
             @csrf
 
             <button type="submit" class="btn btn-danger w-100">
+
                 Logout
+
             </button>
+
         </form>
 
     </div>
 
 
-    {{-- CONTENT --}}
+    {{-- =====================================================
+         CONTENT
+    ====================================================== --}}
+
     <div class="content">
 
+
         {{-- TOPBAR --}}
+
         <div class="topbar no-print">
 
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center gap-3">
 
                 <div>
 
@@ -364,6 +662,7 @@
 
                 </div>
 
+
                 <a href="{{ route('pimpinan.surat-tugas.index') }}" class="btn btn-outline-secondary">
 
                     Kembali
@@ -375,7 +674,10 @@
         </div>
 
 
-        {{-- JUDUL CETAK --}}
+        {{-- =================================================
+             JUDUL CETAK
+        ================================================== --}}
+
         <div class="print-title">
 
             <h2 class="text-center">
@@ -387,18 +689,23 @@
         </div>
 
 
-        {{-- INFORMASI SURAT --}}
+        {{-- =================================================
+             INFORMASI SURAT
+        ================================================== --}}
+
         <div class="card-custom print-section">
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
 
                 <h5 class="mb-0">
                     Informasi Surat Tugas
                 </h5>
 
+
                 @if($suratTugas->status === 'diajukan')
 
-                <span class="badge bg-warning text-dark">
+                <span class="badge bg-warning">
                     Diajukan
                 </span>
 
@@ -427,7 +734,11 @@
 
             <div class="row">
 
+
+                {{-- KIRI --}}
+
                 <div class="col-md-6">
+
 
                     <div class="label">
                         Nomor Surat
@@ -467,7 +778,10 @@
                 </div>
 
 
+                {{-- KANAN --}}
+
                 <div class="col-md-6">
+
 
                     <div class="label">
                         Instansi
@@ -518,11 +832,15 @@
             </div>
 
 
+            {{-- CATATAN --}}
+
             @if($suratTugas->catatan)
 
             <div class="alert alert-secondary mb-0">
 
-                <strong>Catatan:</strong>
+                <strong>
+                    Catatan:
+                </strong>
 
                 <br>
 
@@ -535,19 +853,24 @@
         </div>
 
 
-        {{-- DOKUMEN PDF --}}
+        {{-- =================================================
+             DOKUMEN PDF
+        ================================================== --}}
+
         <div class="card-custom no-print">
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
 
                 <h5 class="mb-0">
                     Dokumen Surat Tugas
                 </h5>
 
+
                 @if($suratTugas->dokumen_pdf)
 
                 <a href="{{ asset('storage/' . $suratTugas->dokumen_pdf) }}" target="_blank"
-                    class="btn btn-outline-dark btn-sm">
+                    class="btn btn-outline-light btn-sm">
 
                     Buka PDF
 
@@ -580,23 +903,29 @@
         </div>
 
 
-        {{-- VALIDASI --}}
+        {{-- =================================================
+             VALIDASI
+        ================================================== --}}
+
         @if($suratTugas->status === 'diajukan')
 
         <div class="card-custom no-print">
 
-            <h5 class="mb-3">
+            <h5 class="mb-2">
                 Validasi Surat Tugas
             </h5>
 
-            <p class="text-muted">
-                Silakan melakukan persetujuan atau penolakan terhadap Surat Tugas ini.
+            <p class="mb-3">
+                Silakan melakukan persetujuan atau penolakan
+                terhadap Surat Tugas ini.
             </p>
 
 
             <div class="d-flex gap-2">
 
+
                 {{-- APPROVE --}}
+
                 <form action="{{ route('pimpinan.surat-tugas.approve', $suratTugas->id) }}" method="POST">
 
                     @csrf
@@ -612,6 +941,7 @@
 
 
                 {{-- REJECT --}}
+
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalTolak">
 
                     Tolak
@@ -625,7 +955,10 @@
         @endif
 
 
-        {{-- TOMBOL CETAK --}}
+        {{-- =================================================
+             CETAK
+        ================================================== --}}
+
         @if($suratTugas->status === 'disetujui')
 
         <div class="card-custom no-print">
@@ -638,13 +971,13 @@
                         Surat Telah Disetujui
                     </h5>
 
-                    <small class="text-muted">
+                    <small>
                         Surat Tugas dapat dicetak.
                     </small>
 
                 </div>
 
-                {{-- CETAK JAVASCRIPT --}}
+
                 <button type="button" class="btn btn-orange" onclick="cetakSurat()">
 
                     Cetak Surat
@@ -660,16 +993,23 @@
     </div>
 
 
-    {{-- MODAL TOLAK --}}
-    <div class="modal fade" id="modalTolak" tabindex="-1">
+    {{-- =====================================================
+         MODAL TOLAK
+    ====================================================== --}}
 
-        <div class="modal-dialog">
+    <div class="modal fade" id="modalTolak" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
 
             <div class="modal-content">
+
 
                 <form action="{{ route('pimpinan.surat-tugas.reject', $suratTugas->id) }}" method="POST">
 
                     @csrf
+
+
+                    {{-- HEADER --}}
 
                     <div class="modal-header">
 
@@ -677,11 +1017,13 @@
                             Tolak Surat Tugas
                         </h5>
 
-                        <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
 
                     </div>
 
+
+                    {{-- BODY --}}
 
                     <div class="modal-body">
 
@@ -689,11 +1031,13 @@
                             Alasan Penolakan
                         </label>
 
-                        <textarea name="catatan" class="form-control" rows="4" required
+                        <textarea name="catatan" class="form-control" rows="3" required
                             placeholder="Masukkan alasan penolakan..."></textarea>
 
                     </div>
 
+
+                    {{-- FOOTER --}}
 
                     <div class="modal-footer">
 
@@ -702,6 +1046,7 @@
                             Batal
 
                         </button>
+
 
                         <button type="submit" class="btn btn-danger">
 
@@ -720,16 +1065,24 @@
     </div>
 
 
+    {{-- =====================================================
+         BOOTSTRAP JS
+    ====================================================== --}}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
 
-    {{-- JAVASCRIPT CETAK --}}
+    {{-- =====================================================
+         CETAK JAVASCRIPT
+    ====================================================== --}}
+
     <script>
     function cetakSurat() {
         window.print();
     }
     </script>
+
 
 </body>
 
