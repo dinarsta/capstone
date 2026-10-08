@@ -60,6 +60,32 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        DB::table('pegawais')->updateOrInsert(
+            ['id' => 5],
+            [
+                'nip' => '199002152021021002',
+                'nama' => 'Andi Setiawan',
+                'jabatan' => 'Analis Sistem Informasi',
+                'unit_kerja' => 'Bidang Teknologi Informasi',
+                'pangkat' => 'Penata',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('pegawais')->updateOrInsert(
+            ['id' => 6],
+            [
+                'nip' => '199305202022031003',
+                'nama' => 'Rina Marlina',
+                'jabatan' => 'Pengelola Data',
+                'unit_kerja' => 'Bidang Data dan Informasi',
+                'pangkat' => 'Penata Muda Tingkat I',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
 
         /*
         |--------------------------------------------------------------------------
@@ -122,6 +148,36 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        DB::table('projects')->updateOrInsert(
+            ['id' => 5],
+            [
+                'nama_project' => 'Digitalisasi Arsip Surat Dinas',
+                'deskripsi' => 'Pengembangan sistem digitalisasi dan pengelolaan arsip surat dinas secara terintegrasi.',
+                'tanggal_mulai' => '2026-08-01',
+                'tanggal_selesai' => '2026-11-30',
+                'progress' => 60,
+                'status' => 'berjalan',
+                'created_by' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('projects')->updateOrInsert(
+            ['id' => 6],
+            [
+                'nama_project' => 'Sistem Monitoring Kegiatan Pegawai',
+                'deskripsi' => 'Pengembangan sistem untuk memantau kegiatan dan pelaksanaan tugas pegawai.',
+                'tanggal_mulai' => '2026-10-01',
+                'tanggal_selesai' => '2027-01-31',
+                'progress' => 20,
+                'status' => 'berjalan',
+                'created_by' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
 
         /*
         |--------------------------------------------------------------------------
@@ -135,6 +191,28 @@ class DatabaseSeeder extends Seeder
                 'project_id' => 4,
                 'pegawai_id' => 4,
                 'peran' => 'Programmer',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('tim_projects')->updateOrInsert(
+            ['id' => 5],
+            [
+                'project_id' => 5,
+                'pegawai_id' => 5,
+                'peran' => 'System Analyst',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('tim_projects')->updateOrInsert(
+            ['id' => 6],
+            [
+                'project_id' => 6,
+                'pegawai_id' => 6,
+                'peran' => 'Data Analyst',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
@@ -155,6 +233,36 @@ class DatabaseSeeder extends Seeder
                 'tanggal' => '2026-10-06',
                 'waktu' => '09:00:00',
                 'lokasi' => 'Ruang Rapat Diskominfo',
+                'status' => 'aktif',
+                'created_by' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('agendas')->updateOrInsert(
+            ['id' => 5],
+            [
+                'judul' => 'Evaluasi Digitalisasi Arsip',
+                'deskripsi' => 'Evaluasi perkembangan digitalisasi dan pengelolaan arsip surat dinas.',
+                'tanggal' => '2026-10-15',
+                'waktu' => '10:00:00',
+                'lokasi' => 'Ruang Rapat Utama',
+                'status' => 'aktif',
+                'created_by' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('agendas')->updateOrInsert(
+            ['id' => 6],
+            [
+                'judul' => 'Monitoring Kegiatan Pegawai',
+                'deskripsi' => 'Pembahasan dan monitoring pelaksanaan kegiatan pegawai.',
+                'tanggal' => '2026-10-22',
+                'waktu' => '13:00:00',
+                'lokasi' => 'Ruang Monitoring',
                 'status' => 'aktif',
                 'created_by' => 4,
                 'created_at' => now(),
@@ -191,6 +299,50 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        DB::table('surat_tugas')->updateOrInsert(
+            ['id' => 5],
+            [
+                'nomor_surat' => 'ST/005/2026',
+                'kegiatan' => 'Evaluasi Digitalisasi Arsip Surat',
+                'pegawai_id' => 5,
+                'instansi_id' => 4,
+                'lokasi_id' => 5,
+                'jenis_kegiatan_id' => 6,
+                'tanggal_mulai' => '2026-10-15',
+                'tanggal_selesai' => '2026-10-15',
+                'dokumen_pdf' => null,
+                'status' => 'draft',
+                'catatan' => null,
+                'created_by' => 4,
+                'approved_by' => null,
+                'approved_at' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('surat_tugas')->updateOrInsert(
+            ['id' => 6],
+            [
+                'nomor_surat' => 'ST/006/2026',
+                'kegiatan' => 'Monitoring Kegiatan Pegawai',
+                'pegawai_id' => 6,
+                'instansi_id' => 4,
+                'lokasi_id' => 5,
+                'jenis_kegiatan_id' => 6,
+                'tanggal_mulai' => '2026-10-22',
+                'tanggal_selesai' => '2026-10-22',
+                'dokumen_pdf' => null,
+                'status' => 'draft',
+                'catatan' => null,
+                'created_by' => 4,
+                'approved_by' => null,
+                'approved_at' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
 
         /*
         |--------------------------------------------------------------------------
@@ -205,6 +357,32 @@ class DatabaseSeeder extends Seeder
                 'judul' => 'Pengembangan Sistem Informasi Manajemen Surat Tugas',
                 'gambar' => 'slide-display/project.jpg',
                 'urutan' => 1,
+                'aktif' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('slide_displays')->updateOrInsert(
+            ['id' => 5],
+            [
+                'project_id' => 5,
+                'judul' => 'Digitalisasi Arsip Surat Dinas',
+                'gambar' => 'slide-display/archive.jpg',
+                'urutan' => 2,
+                'aktif' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('slide_displays')->updateOrInsert(
+            ['id' => 6],
+            [
+                'project_id' => 6,
+                'judul' => 'Sistem Monitoring Kegiatan Pegawai',
+                'gambar' => 'slide-display/monitoring.jpg',
+                'urutan' => 3,
                 'aktif' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -228,6 +406,26 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        DB::table('teks_berjalans')->updateOrInsert(
+            ['id' => 5],
+            [
+                'teks' => 'Selamat datang di halaman display informasi kegiatan',
+                'aktif' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('teks_berjalans')->updateOrInsert(
+            ['id' => 6],
+            [
+                'teks' => 'Pastikan seluruh kegiatan dan surat tugas tercatat dengan baik',
+                'aktif' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
 
         /*
         |--------------------------------------------------------------------------
@@ -240,6 +438,26 @@ class DatabaseSeeder extends Seeder
             [
                 'nama_setting' => 'judul_display',
                 'nilai' => 'SISTEM INFORMASI MANAJEMEN SURAT TUGAS',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('setting_displays')->updateOrInsert(
+            ['id' => 5],
+            [
+                'nama_setting' => 'subjudul_display',
+                'nilai' => 'SISTEM INFORMASI KEGIATAN DAN SURAT TUGAS',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('setting_displays')->updateOrInsert(
+            ['id' => 6],
+            [
+                'nama_setting' => 'footer_display',
+                'nilai' => 'DINAS KOMUNIKASI DAN INFORMATIKA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
