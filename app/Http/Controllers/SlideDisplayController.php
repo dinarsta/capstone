@@ -20,10 +20,7 @@ class SlideDisplayController extends Controller
     {
         $slides = SlideDisplay::orderBy('urutan')->get();
 
-        return view(
-            'admin.slide-display.index',
-            compact('slides')
-        );
+        return view('admin.slide-display.index', compact('slides'));
     }
 
     public function create()
@@ -79,20 +76,27 @@ class SlideDisplayController extends Controller
             'aktif' => 'nullable|boolean',
         ]);
 
+        // Pertahankan gambar lama jika tidak ada upload baru
+        $data['gambar'] = $slideDisplay->gambar;
+
+        // Ganti gambar hanya jika ada file baru
         if ($request->hasFile('gambar')) {
+            $gambarLama = $slideDisplay->gambar;
 
-            if ($slideDisplay->gambar) {
-                Storage::disk('public')->delete(
-                    $slideDisplay->gambar
-                );
-            }
-
-            $data['gambar'] = $request
+            $gambarBaru = $request
                 ->file('gambar')
                 ->store('slide-display', 'public');
+
+            $data['gambar'] = $gambarBaru;
+
+            // Hapus gambar lama setelah gambar baru tersimpan
+            if ($gambarLama) {
+                Storage::disk('public')->delete($gambarLama);
+            }
         }
 
-        $data['aktif'] = $request->has('aktif');
+        // Checkbox aktif: dicentang = true, tidak dicentang = false
+        $data['aktif'] = $request->boolean('aktif');
 
         $slideDisplay->update($data);
 
@@ -103,19 +107,18 @@ class SlideDisplayController extends Controller
 
     public function destroy(SlideDisplay $slideDisplay)
     {
+        // Hapus file gambar dari storage
         if ($slideDisplay->gambar) {
-            Storage::disk('public')->delete(
-                $slideDisplay->gambar
-            );
+            Storage::disk('public')->delete($slideDisplay->gambar);
         }
 
+        // Hapus data slide dari database
         $slideDisplay->delete();
 
         return redirect()
             ->route('admin.slide-display.index')
             ->with('success', 'Slide berhasil dihapus.');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -125,26 +128,23 @@ class SlideDisplayController extends Controller
 
     public function display()
     {
-        // DATA PROJECT
+        // Data project beserta pembuat dan anggota tim
         $projects = Project::with([
             'createdBy',
-            'timProjects.pegawai'
+            'timProjects.pegawai',
         ])
-        ->orderBy('nama_project')
-        ->get();
+            ->orderBy('nama_project')
+            ->get();
 
-
-        // GAMBAR SLIDE YANG AKTIF
+        // Gambar slide yang aktif
         $slides = SlideDisplay::where('aktif', true)
             ->orderBy('urutan')
             ->get();
 
-
-        // TEKS BERJALAN YANG AKTIF
+        // Teks berjalan yang aktif
         $teksBerjalans = TeksBerjalan::where('aktif', true)
             ->latest()
             ->get();
-
 
         return view(
             'display.index',

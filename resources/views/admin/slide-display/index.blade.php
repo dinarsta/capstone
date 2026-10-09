@@ -1,13 +1,13 @@
+
 @extends('layouts.admin')
 
 @section('title', 'Slide Display')
 
 @section('content')
-
 <div class="content-card">
 
+    {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-
         <div>
             <div class="page-title">Slide Display</div>
             <small class="text-secondary">
@@ -20,15 +20,33 @@
                 data-bs-target="#tambahSlide">
             + Tambah Slide
         </button>
-
     </div>
 
+    {{-- NOTIFIKASI --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ session('success') }}
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <strong>Terjadi kesalahan:</strong>
+            <ul class="mb-0 mt-2">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- TABEL SLIDE --}}
     <div class="table-responsive">
-
         <table class="table-custom">
-
             <thead>
-
                 <tr>
                     <th>Gambar</th>
                     <th>Judul</th>
@@ -36,349 +54,394 @@
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
-
             </thead>
 
             <tbody>
+                @forelse($slides as $slide)
+                    <tr>
+                        <td>
+                            @if($slide->gambar)
+                                <img
+                                    src="{{ asset('storage/' . $slide->gambar) }}"
+                                    alt="{{ $slide->judul ?? 'Gambar slide' }}"
+                                    style="width:100px;height:55px;object-fit:cover;border-radius:7px;"
+                                    onerror="this.style.display='none';"
+                                >
+                            @else
+                                <span class="text-secondary">
+                                    Tidak ada gambar
+                                </span>
+                            @endif
+                        </td>
 
-            @forelse($slides as $slide)
+                        <td>{{ $slide->judul ?? '-' }}</td>
+                        <td>{{ $slide->urutan }}</td>
 
-                <tr>
+                        <td>
+                            @if($slide->aktif)
+                                <span class="status status-disetujui">
+                                    Aktif
+                                </span>
+                            @else
+                                <span class="status status-ditolak">
+                                    Nonaktif
+                                </span>
+                            @endif
+                        </td>
 
-                    <td>
-
-                        <img src="{{ asset('storage/'.$slide->gambar) }}"
-                             style="width:100px;height:55px;object-fit:cover;border-radius:7px;">
-
-                    </td>
-
-                    <td>{{ $slide->judul ?? '-' }}</td>
-
-                    <td>{{ $slide->urutan }}</td>
-
-                    <td>
-
-                        @if($slide->aktif)
-                            <span class="status status-disetujui">
-                                Aktif
-                            </span>
-                        @else
-                            <span class="status status-ditolak">
-                                Nonaktif
-                            </span>
-                        @endif
-
-                    </td>
-
-                    <td>
-
-                        <button class="btn-dark-custom"
+                        <td>
+                            <button
+                                type="button"
+                                class="btn-dark-custom"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editSlide{{ $slide->id }}">
-                            Ubah
-                        </button>
+                                Ubah
+                            </button>
 
-                        <button class="btn-dark-custom"
+                            <button
+                                type="button"
+                                class="btn-dark-custom"
                                 data-bs-toggle="modal"
                                 data-bs-target="#hapusSlide{{ $slide->id }}">
-                            Hapus
-                        </button>
-
-                    </td>
-
-                </tr>
-
-            @empty
-
-                <tr>
-                    <td colspan="5"
-                        class="text-center text-secondary py-4">
-                        Belum ada slide.
-                    </td>
-                </tr>
-
-            @endforelse
-
+                                Hapus
+                            </button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5"
+                            class="text-center text-secondary py-4">
+                            Belum ada slide.
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
-
         </table>
-
     </div>
-
 </div>
 
-
-{{-- TAMBAH --}}
-
+{{-- =========================================================
+     MODAL TAMBAH SLIDE
+========================================================= --}}
 <div class="modal fade" id="tambahSlide" tabindex="-1">
-
     <div class="modal-dialog modal-lg modal-dialog-centered">
-
         <div class="modal-content">
 
-            <form action="{{ route('admin.slide-display.store') }}"
-                  method="POST"
-                  enctype="multipart/form-data">
+            <form
+                action="{{ route('admin.slide-display.store') }}"
+                method="POST"
+                enctype="multipart/form-data">
 
                 @csrf
 
                 <div class="modal-header">
-
-                    <h5 class="modal-title">
-                        Tambah Slide
-                    </h5>
+                    <h5 class="modal-title">Tambah Slide</h5>
 
                     <button type="button"
                             class="btn-close btn-close-white"
-                            data-bs-dismiss="modal">
-                    </button>
-
+                            data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
-
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Judul
-                        </label>
-
-                        <input type="text"
-                               name="judul"
-                               class="form-control">
-
+                        <label class="form-label">Judul</label>
+                        <input
+                            type="text"
+                            name="judul"
+                            class="form-control"
+                            value="{{ old('judul') }}">
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">Gambar</label>
+                        <input
+                            type="file"
+                            name="gambar"
+                            class="form-control"
+                            accept="image/jpeg,image/png,image/webp"
+                            required>
 
-                        <label class="form-label">
-                            Gambar
-                        </label>
-
-                        <input type="file"
-                               name="gambar"
-                               class="form-control"
-                               accept="image/*"
-                               required>
-
+                        <small class="text-secondary">
+                            Format JPG, JPEG, PNG, atau WEBP. Maksimal 5 MB.
+                        </small>
                     </div>
 
                     <div class="mb-3">
-
-                        <label class="form-label">
-                            Urutan
-                        </label>
-
-                        <input type="number"
-                               name="urutan"
-                               class="form-control"
-                               value="0">
-
+                        <label class="form-label">Urutan</label>
+                        <input
+                            type="number"
+                            name="urutan"
+                            class="form-control"
+                            value="{{ old('urutan', 0) }}">
                     </div>
 
                     <div class="form-check">
+                        <input
+                            type="checkbox"
+                            name="aktif"
+                            value="1"
+                            class="form-check-input"
+                            id="aktifTambah"
+                            checked>
 
-                        <input type="checkbox"
-                               name="aktif"
-                               value="1"
-                               class="form-check-input"
-                               checked>
-
-                        <label class="form-check-label">
+                        <label class="form-check-label"
+                               for="aktifTambah">
                             Aktif
                         </label>
-
                     </div>
-
                 </div>
 
                 <div class="modal-footer">
-
-                    <button type="button"
-                            class="btn-dark-custom"
-                            data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn-dark-custom"
+                        data-bs-dismiss="modal">
                         Batal
                     </button>
 
-                    <button class="btn-orange">
+                    <button type="submit" class="btn-orange">
                         Tambah
                     </button>
-
                 </div>
-
             </form>
-
         </div>
-
     </div>
-
 </div>
 
-
+{{-- =========================================================
+     MODAL EDIT DAN HAPUS
+========================================================= --}}
 @foreach($slides as $slide)
 
-{{-- EDIT --}}
+    {{-- MODAL EDIT --}}
+    <div class="modal fade"
+         id="editSlide{{ $slide->id }}"
+         tabindex="-1">
 
-<div class="modal fade"
-     id="editSlide{{ $slide->id }}"
-     tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
 
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+                <form
+                    action="{{ route('admin.slide-display.update', $slide) }}"
+                    method="POST"
+                    enctype="multipart/form-data">
 
-        <div class="modal-content">
+                    @csrf
+                    @method('PUT')
 
-            <form action="{{ route('admin.slide-display.update', $slide) }}"
-                  method="POST"
-                  enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ubah Slide</h5>
 
-                @csrf
-                @method('PUT')
+                        <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"></button>
+                    </div>
 
-                <div class="modal-header">
+                    <div class="modal-body">
 
-                    <h5 class="modal-title">
-                        Ubah Slide
-                    </h5>
+                        {{-- JUDUL --}}
+                        <div class="mb-3">
+                            <label class="form-label">Judul</label>
 
-                    <button type="button"
-                            class="btn-close btn-close-white"
-                            data-bs-dismiss="modal">
-                    </button>
+                            <input
+                                type="text"
+                                name="judul"
+                                class="form-control"
+                                value="{{ old('judul', $slide->judul) }}">
+                        </div>
 
-                </div>
+                        {{-- GAMBAR LAMA --}}
+                        <div class="mb-3">
+                            <label class="form-label d-block">
+                                Gambar Saat Ini
+                            </label>
 
-                <div class="modal-body">
+                            @if($slide->gambar)
+                                <div class="mb-3">
+                                    <img
+                                        src="{{ asset('storage/' . $slide->gambar) }}"
+                                        alt="{{ $slide->judul ?? 'Gambar slide' }}"
+                                        class="preview-gambar-lama"
+                                        style="display:block;max-width:100%;width:250px;max-height:160px;object-fit:contain;border:1px solid #dee2e6;border-radius:8px;padding:5px;"
+                                    >
+                                </div>
 
-                    <div class="mb-3">
+                                <input
+                                    type="hidden"
+                                    name="gambar_lama"
+                                    value="{{ $slide->gambar }}">
+                            @else
+                                <p class="text-secondary">
+                                    Belum ada gambar tersimpan.
+                                </p>
+                            @endif
 
-                        <label class="form-label">
-                            Judul
-                        </label>
+                            <label class="form-label">
+                                Ganti Gambar (Opsional)
+                            </label>
 
-                        <input type="text"
-                               name="judul"
-                               class="form-control"
-                               value="{{ $slide->judul }}">
+                            <input
+                                type="file"
+                                name="gambar"
+                                class="form-control"
+                                accept="image/jpeg,image/png,image/webp"
+                                onchange="previewGambar(this, 'previewBaru{{ $slide->id }}')">
+
+                            <small class="text-secondary">
+                                Kosongkan jika ingin tetap menggunakan gambar lama.
+                                Format JPG, JPEG, PNG, atau WEBP. Maksimal 5 MB.
+                            </small>
+
+                            {{-- PREVIEW GAMBAR BARU --}}
+                            <div class="mt-3">
+                                <img
+                                    id="previewBaru{{ $slide->id }}"
+                                    alt="Preview gambar baru"
+                                    style="display:none;max-width:100%;width:250px;max-height:160px;object-fit:contain;border:1px solid #dee2e6;border-radius:8px;padding:5px;">
+                            </div>
+                        </div>
+
+                        {{-- URUTAN --}}
+                        <div class="mb-3">
+                            <label class="form-label">Urutan</label>
+
+                            <input
+                                type="number"
+                                name="urutan"
+                                class="form-control"
+                                value="{{ old('urutan', $slide->urutan ?? 0) }}">
+                        </div>
+
+                        {{-- STATUS --}}
+                        <div class="form-check">
+                            <input
+                                type="checkbox"
+                                name="aktif"
+                                value="1"
+                                class="form-check-input"
+                                id="aktif{{ $slide->id }}"
+                                @checked(old('aktif', $slide->aktif))>
+
+                            <label
+                                class="form-check-label"
+                                for="aktif{{ $slide->id }}">
+                                Aktif
+                            </label>
+                        </div>
 
                     </div>
 
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Ganti Gambar
-                        </label>
-
-                        <input type="file"
-                               name="gambar"
-                               class="form-control"
-                               accept="image/*">
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Urutan
-                        </label>
-
-                        <input type="number"
-                               name="urutan"
-                               class="form-control"
-                               value="{{ $slide->urutan }}">
-
-                    </div>
-
-                    <div class="form-check">
-
-                        <input type="checkbox"
-                               name="aktif"
-                               value="1"
-                               class="form-check-input"
-                               @checked($slide->aktif)>
-
-                        <label class="form-check-label">
-                            Aktif
-                        </label>
-
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button type="button"
+                    <div class="modal-footer">
+                        <button
+                            type="button"
                             class="btn-dark-custom"
                             data-bs-dismiss="modal">
-                        Batal
-                    </button>
+                            Batal
+                        </button>
 
-                    <button class="btn-orange">
-                        Simpan
-                    </button>
+                        <button type="submit" class="btn-orange">
+                            Simpan Perubahan
+                        </button>
+                    </div>
 
-                </div>
-
-            </form>
-
+                </form>
+            </div>
         </div>
-
     </div>
 
-</div>
+    {{-- MODAL HAPUS --}}
+    <div class="modal fade"
+         id="hapusSlide{{ $slide->id }}"
+         tabindex="-1">
 
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
 
-{{-- DELETE --}}
+                <form
+                    action="{{ route('admin.slide-display.destroy', $slide) }}"
+                    method="POST">
 
-<div class="modal fade"
-     id="hapusSlide{{ $slide->id }}"
-     tabindex="-1">
+                    @csrf
+                    @method('DELETE')
 
-    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hapus Slide</h5>
 
-        <div class="modal-content">
+                        <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"></button>
+                    </div>
 
-            <form action="{{ route('admin.slide-display.destroy', $slide) }}"
-                  method="POST">
+                    <div class="modal-body">
+                        <p class="mb-2">
+                            Yakin ingin menghapus slide ini?
+                        </p>
 
-                @csrf
-                @method('DELETE')
+                        @if($slide->gambar)
+                            <img
+                                src="{{ asset('storage/' . $slide->gambar) }}"
+                                alt="{{ $slide->judul ?? 'Gambar slide' }}"
+                                style="width:120px;height:70px;object-fit:cover;border-radius:7px;">
+                        @endif
 
-                <div class="modal-header">
+                        <p class="mt-2 mb-0">
+                            <strong>{{ $slide->judul ?? 'Tanpa judul' }}</strong>
+                        </p>
+                    </div>
 
-                    <h5 class="modal-title">
-                        Hapus Slide
-                    </h5>
-
-                </div>
-
-                <div class="modal-body">
-
-                    Yakin ingin menghapus slide ini?
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button type="button"
+                    <div class="modal-footer">
+                        <button
+                            type="button"
                             class="btn-dark-custom"
                             data-bs-dismiss="modal">
-                        Batal
-                    </button>
+                            Batal
+                        </button>
 
-                    <button class="btn btn-danger">
-                        Hapus
-                    </button>
+                        <button type="submit" class="btn btn-danger">
+                            Hapus
+                        </button>
+                    </div>
 
-                </div>
-
-            </form>
-
+                </form>
+            </div>
         </div>
-
     </div>
-
-</div>
 
 @endforeach
+
+{{-- PREVIEW GAMBAR BARU --}}
+<script>
+    function previewGambar(input, previewId) {
+        const preview = document.getElementById(previewId);
+
+        if (!preview) {
+            return;
+        }
+
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+
+            if (!file.type.startsWith('image/')) {
+                input.value = '';
+                preview.src = '';
+                preview.style.display = 'none';
+                alert('File harus berupa gambar.');
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                preview.src = event.target.result;
+                preview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            preview.removeAttribute('src');
+            preview.style.display = 'none';
+        }
+    }
+</script>
 
 @endsection
