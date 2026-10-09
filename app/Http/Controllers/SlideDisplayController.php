@@ -51,14 +51,14 @@ class SlideDisplayController extends Controller
             'aktif'      => 'nullable|boolean',
         ]);
 
-        // Simpan gambar ke storage/app/public/slide-display.
+     
         $data['gambar'] = $request->file('gambar')
             ->store('slide-display', 'public');
 
         $data['urutan'] = $data['urutan'] ?? 0;
         $data['aktif'] = $request->boolean('aktif');
 
-        // Simpan slide beserta relasi project.
+       
         SlideDisplay::create($data);
 
         return redirect()
@@ -98,12 +98,12 @@ class SlideDisplayController extends Controller
             'aktif'      => 'nullable|boolean',
         ]);
 
-        // Jika gambar baru di-upload, simpan gambar baru.
+       
         if ($request->hasFile('gambar')) {
             $gambarBaru = $request->file('gambar')
                 ->store('slide-display', 'public');
 
-            // Hapus gambar lama setelah gambar baru tersimpan.
+            
             if ($slideDisplay->gambar) {
                 Storage::disk('public')->delete(
                     $slideDisplay->gambar
@@ -135,7 +135,7 @@ class SlideDisplayController extends Controller
             );
         }
 
-        // Hapus data slide.
+    
         $slideDisplay->delete();
 
         return redirect()
@@ -151,7 +151,7 @@ class SlideDisplayController extends Controller
 
     public function display()
     {
-        // Ambil project, pembuat, anggota tim, dan slide aktif.
+       
         $projects = Project::with([
             'createdBy',
             'timProjects.pegawai',
@@ -165,7 +165,7 @@ class SlideDisplayController extends Controller
             ->orderBy('nama_project')
             ->get();
 
-        // Ambil teks berjalan yang aktif.
+        
         $teksBerjalans = TeksBerjalan::where('aktif', true)
             ->latest()
             ->get();
