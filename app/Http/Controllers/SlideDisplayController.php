@@ -18,30 +18,47 @@ class SlideDisplayController extends Controller
 
     public function index()
     {
-        $slides = SlideDisplay::orderBy('urutan')->get();
+        $slides = SlideDisplay::with('project')
+            ->orderBy('urutan')
+            ->orderBy('id')
+            ->get();
 
-        return view('admin.slide-display.index', compact('slides'));
+        $projects = Project::orderBy('nama_project')->get();
+
+        return view(
+            'admin.slide-display.index',
+            compact('slides', 'projects')
+        );
     }
 
     public function create()
     {
-        return view('admin.slide-display.create');
+        $projects = Project::orderBy('nama_project')->get();
+
+        return view(
+            'admin.slide-display.create',
+            compact('projects')
+        );
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'judul' => 'nullable|string|max:255',
-            'gambar' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
-            'urutan' => 'nullable|integer',
+            'project_id' => 'required|exists:projects,id',
+            'judul'      => 'nullable|string|max:255',
+            'gambar'     => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'urutan'     => 'nullable|integer|min:0',
+            'aktif'      => 'nullable|boolean',
         ]);
 
-        $data['gambar'] = $request
-            ->file('gambar')
+        // Simpan gambar ke storage/app/public/slide-display.
+        $data['gambar'] = $request->file('gambar')
             ->store('slide-display', 'public');
 
-        $data['aktif'] = true;
+        $data['urutan'] = $data['urutan'] ?? 0;
+        $data['aktif'] = $request->boolean('aktif');
 
+        // Simpan slide beserta relasi project.
         SlideDisplay::create($data);
 
         return redirect()
@@ -51,6 +68,8 @@ class SlideDisplayController extends Controller
 
     public function show(SlideDisplay $slideDisplay)
     {
+        $slideDisplay->load('project');
+
         return view(
             'admin.slide-display.show',
             compact('slideDisplay')
@@ -59,9 +78,11 @@ class SlideDisplayController extends Controller
 
     public function edit(SlideDisplay $slideDisplay)
     {
+        $projects = Project::orderBy('nama_project')->get();
+
         return view(
             'admin.slide-display.edit',
-            compact('slideDisplay')
+            compact('slideDisplay', 'projects')
         );
     }
 
@@ -70,32 +91,32 @@ class SlideDisplayController extends Controller
         SlideDisplay $slideDisplay
     ) {
         $data = $request->validate([
-            'judul' => 'nullable|string|max:255',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-            'urutan' => 'nullable|integer',
-            'aktif' => 'nullable|boolean',
+            'project_id' => 'required|exists:projects,id',
+            'judul'      => 'nullable|string|max:255',
+            'gambar'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'urutan'     => 'nullable|integer|min:0',
+            'aktif'      => 'nullable|boolean',
         ]);
 
-        // Pertahankan gambar lama jika tidak ada upload baru
-        $data['gambar'] = $slideDisplay->gambar;
-
-        // Ganti gambar hanya jika ada file baru
+        // Jika gambar baru di-upload, simpan gambar baru.
         if ($request->hasFile('gambar')) {
-            $gambarLama = $slideDisplay->gambar;
-
-            $gambarBaru = $request
-                ->file('gambar')
+            $gambarBaru = $request->file('gambar')
                 ->store('slide-display', 'public');
 
-            $data['gambar'] = $gambarBaru;
-
-            // Hapus gambar lama setelah gambar baru tersimpan
-            if ($gambarLama) {
-                Storage::disk('public')->delete($gambarLama);
+            // Hapus gambar lama setelah gambar baru tersimpan.
+            if ($slideDisplay->gambar) {
+                Storage::disk('public')->delete(
+                    $slideDisplay->gambar
+                );
             }
+
+            $data['gambar'] = $gambarBaru;
         }
 
-        // Checkbox aktif: dicentang = true, tidak dicentang = false
+        // Pertahankan urutan lama jika tidak dikirim.
+        $data['urutan'] = $data['urutan'] ?? $slideDisplay->urutan;
+
+        // Checkbox tidak dicentang berarti nonaktif.
         $data['aktif'] = $request->boolean('aktif');
 
         $slideDisplay->update($data);
@@ -107,12 +128,14 @@ class SlideDisplayController extends Controller
 
     public function destroy(SlideDisplay $slideDisplay)
     {
-        // Hapus file gambar dari storage
+        // Hapus file gambar dari storage.
         if ($slideDisplay->gambar) {
-            Storage::disk('public')->delete($slideDisplay->gambar);
+            Storage::disk('public')->delete(
+                $slideDisplay->gambar
+            );
         }
 
-        // Hapus data slide dari database
+        // Hapus data slide.
         $slideDisplay->delete();
 
         return redirect()
@@ -128,31 +151,28 @@ class SlideDisplayController extends Controller
 
     public function display()
     {
-        // Data project beserta pembuat dan anggota tim
+        // Ambil project, pembuat, anggota tim, dan slide aktif.
         $projects = Project::with([
             'createdBy',
             'timProjects.pegawai',
+            'slides' => function ($query) {
+                $query->where('aktif', true)
+                    ->whereNotNull('gambar')
+                    ->orderBy('urutan')
+                    ->orderBy('id');
+            },
         ])
             ->orderBy('nama_project')
             ->get();
 
-        // Gambar slide yang aktif
-        $slides = SlideDisplay::where('aktif', true)
-            ->orderBy('urutan')
-            ->get();
-
-        // Teks berjalan yang aktif
+        // Ambil teks berjalan yang aktif.
         $teksBerjalans = TeksBerjalan::where('aktif', true)
             ->latest()
             ->get();
 
         return view(
             'display.index',
-            compact(
-                'projects',
-                'slides',
-                'teksBerjalans'
-            )
+            compact('projects', 'teksBerjalans')
         );
     }
 }

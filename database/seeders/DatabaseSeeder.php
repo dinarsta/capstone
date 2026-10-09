@@ -64,6 +64,28 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        DB::table('master_models')->updateOrInsert(
+            ['id' => 5],
+            [
+                'kategori' => 'lokasi',
+                'nama' => 'Ruang Rapat Diskominfo',
+                'aktif' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        DB::table('master_models')->updateOrInsert(
+            ['id' => 6],
+            [
+                'kategori' => 'jenis_kegiatan',
+                'nama' => 'Rapat Koordinasi',
+                'aktif' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
         /*
         |--------------------------------------------------------------------------
         | 4. PROJECTS
@@ -74,7 +96,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 4],
             [
                 'nama_project' => 'Pengembangan Sistem Informasi Manajemen Surat Tugas',
-                'deskripsi' => 'Pengembangan sistem pengelolaan surat tugas.',
+                'deskripsi' => 'Pengembangan sistem pengelolaan surat tugas, pengajuan, validasi, dan pencetakan dokumen.',
                 'tanggal_mulai' => '2026-09-01',
                 'tanggal_selesai' => '2026-12-31',
                 'progress' => 35,
@@ -112,7 +134,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 4],
             [
                 'judul' => 'Rapat Koordinasi Pengembangan Sistem',
-                'deskripsi' => 'Pembahasan progres pengembangan sistem surat tugas.',
+                'deskripsi' => 'Pembahasan progres pengembangan Sistem Informasi Manajemen Surat Tugas.',
                 'tanggal' => '2026-10-15',
                 'waktu' => '09:00:00',
                 'lokasi' => 'Ruang Rapat Diskominfo',
@@ -136,8 +158,8 @@ class DatabaseSeeder extends Seeder
                 'kegiatan' => 'Rapat Koordinasi Pengembangan Sistem',
                 'pegawai_id' => 4,
                 'instansi_id' => 4,
-                'lokasi_id' => null,
-                'jenis_kegiatan_id' => null,
+                'lokasi_id' => 5,
+                'jenis_kegiatan_id' => 6,
                 'tanggal_mulai' => '2026-10-15',
                 'tanggal_selesai' => '2026-10-15',
                 'dokumen_pdf' => null,
@@ -157,6 +179,7 @@ class DatabaseSeeder extends Seeder
         |--------------------------------------------------------------------------
         |
         | Tidak diisi data.
+        | Gambar ditambahkan melalui menu Slide Display.
         |
         */
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Project;
 
 class SlideDisplay extends Model
 {
@@ -17,8 +18,9 @@ class SlideDisplay extends Model
     ];
 
     protected $casts = [
-        'aktif' => 'boolean',
+        'project_id' => 'integer',
         'urutan' => 'integer',
+        'aktif' => 'boolean',
     ];
 
     /**
@@ -26,9 +28,6 @@ class SlideDisplay extends Model
      */
     public function project()
     {
-        return $this->belongsTo(
-            Project::class,
-            'project_id'
-        );
+        return $this->belongsTo(Project::class, 'project_id');
     }
 }
