@@ -46,7 +46,7 @@
                         <td>
                             @if($slide->gambar)
                                 <img
-                                    src="{{ asset('storage/' . $slide->gambar) }}"
+                                    src="{{ file_exists(public_path($slide->gambar)) ? asset($slide->gambar) : asset('storage/' . $slide->gambar) }}"
                                     alt="{{ $slide->judul ?? 'Gambar slide' }}"
                                     style="width:100px;height:60px;object-fit:contain;border-radius:7px;"
                                     onerror="this.style.display='none';"
@@ -327,7 +327,7 @@
 
                             @if($slide->gambar)
                                 <img
-                                    src="{{ asset('storage/' . $slide->gambar) }}"
+                                    src="{{ file_exists(public_path($slide->gambar)) ? asset($slide->gambar) : asset('storage/' . $slide->gambar) }}"
                                     alt="{{ $slide->judul ?? 'Gambar slide' }}"
                                     style="display:block;max-width:100%;width:300px;max-height:200px;object-fit:contain;border:1px solid #dee2e6;border-radius:8px;padding:5px;"
                                     class="mb-3">
@@ -444,7 +444,7 @@
 
                         @if($slide->gambar)
                             <img
-                                src="{{ asset('storage/' . $slide->gambar) }}"
+                                src="{{ file_exists(public_path($slide->gambar)) ? asset($slide->gambar) : asset('storage/' . $slide->gambar) }}"
                                 alt="{{ $slide->judul ?? 'Gambar slide' }}"
                                 style="width:180px;height:100px;object-fit:contain;border-radius:7px;"
                                 class="mb-3">

@@ -6,10 +6,55 @@ use App\Models\SlideDisplay;
 use App\Models\Project;
 use App\Models\TeksBerjalan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SlideDisplayController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | HELPER - PENYIMPANAN GAMBAR PUBLIC
+    |--------------------------------------------------------------------------
+    */
+
+    private function uploadGambar(Request $request): string
+    {
+        $directory = public_path('slide-display');
+
+        if (!File::isDirectory($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
+
+        $file = $request->file('gambar');
+        $namaFile = Str::uuid() . '.' . $file->extension();
+
+        $file->move($directory, $namaFile);
+
+        return 'slide-display/' . $namaFile;
+    }
+
+    private function hapusGambar(?string $path): void
+    {
+        if (!$path) {
+            return;
+        }
+
+        // Hanya hapus file di folder slide-display.
+        if (str_starts_with($path, 'slide-display/')) {
+            $filePublic = public_path($path);
+
+            if (File::exists($filePublic)) {
+                File::delete($filePublic);
+            }
+        }
+
+        // Bersihkan file lama dari storage Laravel jika masih ada.
+        if (str_starts_with($path, 'slide-display/')) {
+            Storage::disk('public')->delete($path);
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ADMIN - SLIDE DISPLAY
@@ -51,14 +96,10 @@ class SlideDisplayController extends Controller
             'aktif'      => 'nullable|boolean',
         ]);
 
-     
-        $data['gambar'] = $request->file('gambar')
-            ->store('slide-display', 'public');
-
+        $data['gambar'] = $this->uploadGambar($request);
         $data['urutan'] = $data['urutan'] ?? 0;
         $data['aktif'] = $request->boolean('aktif');
 
-       
         SlideDisplay::create($data);
 
         return redirect()
@@ -98,28 +139,30 @@ class SlideDisplayController extends Controller
             'aktif'      => 'nullable|boolean',
         ]);
 
-       
         if ($request->hasFile('gambar')) {
-            $gambarBaru = $request->file('gambar')
-                ->store('slide-display', 'public');
+            // Simpan gambar baru terlebih dahulu.
+            $gambarBaru = $this->uploadGambar($request);
 
-            
-            if ($slideDisplay->gambar) {
-                Storage::disk('public')->delete(
-                    $slideDisplay->gambar
-                );
-            }
+            $gambarLama = $slideDisplay->gambar;
 
             $data['gambar'] = $gambarBaru;
+
+            $slideDisplay->update([
+                ...$data,
+                'urutan' => $data['urutan'] ?? $slideDisplay->urutan,
+                'aktif'  => $request->boolean('aktif'),
+            ]);
+
+            // Hapus gambar lama setelah data berhasil diperbarui.
+            if ($gambarLama !== $gambarBaru) {
+                $this->hapusGambar($gambarLama);
+            }
+        } else {
+            $data['urutan'] = $data['urutan'] ?? $slideDisplay->urutan;
+            $data['aktif'] = $request->boolean('aktif');
+
+            $slideDisplay->update($data);
         }
-
-        // Pertahankan urutan lama jika tidak dikirim.
-        $data['urutan'] = $data['urutan'] ?? $slideDisplay->urutan;
-
-        // Checkbox tidak dicentang berarti nonaktif.
-        $data['aktif'] = $request->boolean('aktif');
-
-        $slideDisplay->update($data);
 
         return redirect()
             ->route('admin.slide-display.index')
@@ -128,15 +171,11 @@ class SlideDisplayController extends Controller
 
     public function destroy(SlideDisplay $slideDisplay)
     {
-        // Hapus file gambar dari storage.
-        if ($slideDisplay->gambar) {
-            Storage::disk('public')->delete(
-                $slideDisplay->gambar
-            );
-        }
+        $gambar = $slideDisplay->gambar;
 
-    
         $slideDisplay->delete();
+
+        $this->hapusGambar($gambar);
 
         return redirect()
             ->route('admin.slide-display.index')
@@ -151,7 +190,6 @@ class SlideDisplayController extends Controller
 
     public function display()
     {
-       
         $projects = Project::with([
             'createdBy',
             'timProjects.pegawai',
@@ -165,7 +203,6 @@ class SlideDisplayController extends Controller
             ->orderBy('nama_project')
             ->get();
 
-        
         $teksBerjalans = TeksBerjalan::where('aktif', true)
             ->latest()
             ->get();
