@@ -119,37 +119,27 @@
 
                         <div class="d-flex align-items-center gap-2">
 
-                            {{-- PDF SUDAH ADA --}}
-
+                            {{-- TOMBOL PDF --}}
                             @if($surat->dokumen_pdf)
 
-                            <a href="{{ asset('storage/' . $surat->dokumen_pdf) }}" target="_blank"
+                            <a href="{{ asset('surat-tugas/' . $surat->dokumen_pdf) }}" target="_blank"
                                 class="btn-dark-custom text-decoration-none">
-
                                 PDF
-
                             </a>
 
-                            @else
+                            @endif
 
-                            {{-- PDF BELUM ADA --}}
-
+                            {{-- TOMBOL UPDATE --}}
                             @if(in_array($surat->status, ['draft', 'ditolak']))
 
                             <button type="button" class="btn-orange" data-bs-toggle="modal"
                                 data-bs-target="#updatePdf{{ $surat->id }}">
-
                                 Update
-
                             </button>
 
                             @endif
 
-                            @endif
-
-
-                            {{-- AJUKAN HANYA JIKA PDF SUDAH ADA --}}
-
+                            {{-- TOMBOL AJUKAN --}}
                             @if(
                             in_array($surat->status, ['draft', 'ditolak'])
                             && $surat->dokumen_pdf
@@ -160,9 +150,7 @@
                                 @csrf
 
                                 <button type="submit" class="btn-orange">
-
                                     Ajukan
-
                                 </button>
 
                             </form>

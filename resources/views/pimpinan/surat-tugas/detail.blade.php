@@ -1138,26 +1138,24 @@
                     Dokumen Surat Tugas
                 </h5>
 
-
                 @if($suratTugas->dokumen_pdf)
-
-                <a href="{{ asset('storage/' . $suratTugas->dokumen_pdf) }}" target="_blank"
+                <a href="{{ asset('surat-tugas/' . basename($suratTugas->dokumen_pdf)) }}" target="_blank"
                     class="btn btn-outline-light btn-sm">
 
+                    <i class="fas fa-file-pdf me-1"></i>
                     Buka PDF
 
                 </a>
-
                 @endif
 
             </div>
-
 
             @if($suratTugas->dokumen_pdf)
 
             <div class="pdf-container">
 
-                <iframe src="{{ asset('storage/' . $suratTugas->dokumen_pdf) }}">
+                <iframe src="{{ asset('surat-tugas/' . basename($suratTugas->dokumen_pdf)) }}" width="100%"
+                    height="700px" style="border: none;" title="Dokumen Surat Tugas">
                 </iframe>
 
             </div>
@@ -1165,15 +1163,12 @@
             @else
 
             <div class="alert alert-warning mb-0">
-
                 Dokumen PDF belum diupload.
-
             </div>
 
             @endif
 
         </div>
-
 
         {{-- =================================================
              VALIDASI

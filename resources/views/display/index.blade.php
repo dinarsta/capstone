@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Display Project</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -12,12 +14,15 @@
         --bg: #07111c;
         --panel: #101d2c;
         --panel-2: #14263a;
-        --card: #142333;
         --line: #203449;
         --text: #edf3f8;
         --muted: #71869a;
         --accent: #35d7a0;
         --amber: #f0b52f;
+    }
+
+    * {
+        box-sizing: border-box;
     }
 
     body {
@@ -28,9 +33,11 @@
         color: var(--text);
         font-family: Arial, Helvetica, sans-serif;
         min-height: 100vh;
+        margin: 0;
     }
 
-    /* ---------- Header ---------- */
+    /* HEADER */
+
     .display-header {
         background: linear-gradient(90deg, var(--panel-2), #112133);
         border-bottom: 1px solid var(--line);
@@ -75,7 +82,8 @@
         min-width: 5.5rem;
     }
 
-    /* ---------- Grid ---------- */
+    /* PROJECT GRID */
+
     .project-grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -99,14 +107,18 @@
         opacity: .75;
     }
 
+    /* IMAGE */
+
     .project-image {
         width: clamp(2.8rem, 2rem + 3vw, 4.2rem);
         aspect-ratio: 1;
         background: linear-gradient(145deg, #0d1a29, #122337);
         border: 1px solid #2a4055;
+        flex-shrink: 0;
     }
 
     .project-image img {
+        display: block;
         width: 100%;
         height: 100%;
         padding: 5px;
@@ -119,6 +131,8 @@
         letter-spacing: .05em;
         text-align: center;
     }
+
+    /* PROJECT NUMBER */
 
     .project-number {
         width: 1.6rem;
@@ -138,6 +152,8 @@
         font-size: clamp(.8rem, .7rem + .4vw, 1rem);
     }
 
+    /* PROGRESS */
+
     .project-card .progress {
         height: 6px;
         background: #263746;
@@ -147,6 +163,8 @@
         background: linear-gradient(90deg, #25c993, #46e5b1);
         box-shadow: 0 0 9px rgba(50, 217, 160, .25);
     }
+
+    /* INFORMATION */
 
     .info-label {
         color: #526a7f;
@@ -160,7 +178,8 @@
         max-width: 12rem;
     }
 
-    /* ---------- Running text ---------- */
+    /* RUNNING TEXT */
+
     .running-wrapper {
         background: linear-gradient(90deg, #0b1723, #09131e);
         border-top: 1px solid #233749;
@@ -209,7 +228,8 @@
         }
     }
 
-    /* ---------- Tablet & TV (lg ke atas): satu layar penuh, 2 kolom ---------- */
+    /* DESKTOP / TV */
+
     @media (min-width: 992px) {
 
         html,
@@ -220,6 +240,7 @@
 
         .display-root {
             height: 100vh;
+            min-height: 0 !important;
         }
 
         .project-grid {
@@ -233,6 +254,10 @@
         .project-card {
             min-height: 0;
         }
+
+        .project-area {
+            overflow: hidden !important;
+        }
     }
     </style>
 </head>
@@ -243,44 +268,80 @@
 
         <div class="px-2 px-md-3 px-xl-4 d-flex flex-column flex-grow-1" style="min-height:0">
 
-            {{-- PANEL --}}
             <main class="d-flex flex-column flex-grow-1 rounded-bottom-4 overflow-hidden border border-top-0 shadow-lg"
                 style="background:linear-gradient(135deg,#101d2c,#0d1927);border-color:var(--line)!important;min-height:0">
 
                 {{-- HEADER --}}
+
                 <header
                     class="display-header d-flex flex-wrap align-items-center justify-content-between gap-2 px-3 px-lg-4 py-2 flex-shrink-0">
 
                     <div class="d-flex align-items-center gap-3">
                         <div class="header-line rounded-pill"></div>
+
                         <div>
-                            <div class="header-title fw-bolder text-white">SEMUA PROJECT</div>
-                            <div class="header-subtitle fw-semibold d-none d-sm-block">MONITORING PROJECT</div>
+                            <div class="header-title fw-bolder text-white">
+                                SEMUA PROJECT
+                            </div>
+
+                            <div class="header-subtitle fw-semibold d-none d-sm-block">
+                                MONITORING PROJECT
+                            </div>
                         </div>
                     </div>
 
                     <div class="d-flex align-items-center gap-3 gap-lg-4">
+
                         <div class="text-end">
-                            <div id="clock" class="clock fw-bolder">00:00:00</div>
-                            <div class="clock-label fw-bold mt-1 d-none d-sm-block">WAKTU SEKARANG</div>
+                            <div id="clock" class="clock fw-bolder">
+                                00:00:00
+                            </div>
+
+                            <div class="clock-label fw-bold mt-1 d-none d-sm-block">
+                                WAKTU SEKARANG
+                            </div>
                         </div>
 
                         <div class="project-count rounded-3 px-3 py-2 text-center">
-                            <span class="d-block fw-bolder text-white fs-6 lh-1">{{ $projects->count() }}</span>
-                            <span class="count-label d-block fw-bold mt-1">PROJECT AKTIF</span>
+                            <span class="d-block fw-bolder text-white fs-6 lh-1">
+                                {{ $projects->count() }}
+                            </span>
+
+                            <span class="count-label d-block fw-bold mt-1">
+                                PROJECT AKTIF
+                            </span>
                         </div>
+
                     </div>
+
                 </header>
 
                 {{-- PROJECT AREA --}}
-                <section class="flex-grow-1 p-2 p-lg-3 overflow-auto overflow-lg-hidden" style="min-height:0">
+
+                <section class="project-area flex-grow-1 p-2 p-lg-3 overflow-auto" style="min-height:0">
 
                     @if ($projects->count() > 0)
-                    @php $half = (int) ceil($projects->count() / 2); @endphp
+
+                    @php
+                    $half = (int) ceil($projects->count() / 2);
+
+                    /*
+                    * Ambil gambar langsung dari public/slide-display.
+                    * Format: JPG, JPEG, PNG, WEBP.
+                    */
+
+                    $gambarDisplay = glob(
+                    public_path('slide-display/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}'),
+                    GLOB_BRACE
+                    ) ?: [];
+
+                    sort($gambarDisplay);
+                    @endphp
 
                     <div class="project-grid" style="--rows: {{ $half }}">
 
                         @foreach ($projects as $project)
+
                         @php
                         $progress = min(max((int) ($project->progress ?? 0), 0), 100);
 
@@ -288,104 +349,182 @@
                         ->map(fn($tim) => $tim->pegawai->nama ?? null)
                         ->filter()
                         ->implode(', ');
+
+                        /*
+                        * Gambar ditentukan berdasarkan urutan project.
+                        * Gambar akan digunakan ulang jika project lebih banyak.
+                        */
+
+                        $jumlahGambar = count($gambarDisplay);
+
+                        $gambarProject = $jumlahGambar > 0
+                        ? asset('slide-display/' . basename(
+                        $gambarDisplay[$loop->index % $jumlahGambar]
+                        ))
+                        : null;
                         @endphp
 
                         <article
                             class="project-card d-flex align-items-center gap-2 gap-md-3 rounded-3 px-2 px-md-3 py-2">
 
-                            {{-- LOGO --}}
+                            {{-- IMAGE --}}
+
                             <div
-                                class="project-image d-flex align-items-center justify-content-center flex-shrink-0 rounded-3 overflow-hidden">
-                                @if ($project->slides && $project->slides->count() > 0)
-                                <img src="{{ asset('storage/' . $project->slides->first()->gambar) }}"
-                                    alt="{{ $project->nama_project }}">
+                                class="project-image d-flex align-items-center justify-content-center rounded-3 overflow-hidden">
+
+                                @if ($gambarProject)
+                                <img src="{{ $gambarProject }}" alt="{{ $project->nama_project }}" loading="eager"
+                                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+
+                                <div class="no-image fw-bold w-100 h-100 align-items-center justify-content-center"
+                                    style="display:none">
+                                    IMAGE ERROR
+                                </div>
                                 @else
-                                <div class="no-image fw-bold">NO IMAGE</div>
+                                <div class="no-image fw-bold">
+                                    NO IMAGE
+                                </div>
                                 @endif
+
                             </div>
 
-                            {{-- DETAIL --}}
+                            {{-- DETAIL PROJECT --}}
+
                             <div class="flex-grow-1 min-w-0" style="min-width:0">
 
                                 <div class="d-flex align-items-center gap-2">
+
                                     <div
                                         class="project-number d-flex align-items-center justify-content-center flex-shrink-0 rounded-2 fw-bold">
                                         {{ $loop->iteration }}
                                     </div>
+
                                     <div class="project-name flex-grow-1 fw-bolder text-white text-truncate"
                                         title="{{ $project->nama_project }}">
                                         {{ $project->nama_project }}
                                     </div>
+
                                     <div class="project-percent fw-bolder flex-shrink-0 text-end">
                                         {{ $progress }}%
                                     </div>
+
                                 </div>
+
+                                {{-- PROGRESS BAR --}}
 
                                 <div class="progress rounded-pill mt-2" role="progressbar"
                                     aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar rounded-pill" style="width: {{ $progress }}%"></div>
+
+                                    <div class="progress-bar rounded-pill" style="width: {{ $progress }}%">
+                                    </div>
+
                                 </div>
 
+                                {{-- KOORDINATOR DAN TIM --}}
+
                                 <div class="d-flex flex-wrap column-gap-3 row-gap-1 mt-2">
+
                                     <div class="d-flex align-items-center gap-1 min-w-0" style="min-width:0">
-                                        <span class="info-label fw-bold">KOORDINATOR</span>
+
+                                        <span class="info-label fw-bold">
+                                            KOORDINATOR
+                                        </span>
+
                                         <span class="info-value fw-bold text-truncate">
                                             {{ $project->createdBy->name ?? '-' }}
                                         </span>
+
                                     </div>
 
                                     <div class="d-flex align-items-center gap-1 min-w-0" style="min-width:0">
-                                        <span class="info-label fw-bold">TIM</span>
+
+                                        <span class="info-label fw-bold">
+                                            TIM
+                                        </span>
+
                                         <span class="info-value fw-bold text-truncate" title="{{ $timNames }}">
                                             {{ $timNames ?: '-' }}
                                         </span>
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </article>
+
                         @endforeach
+
                     </div>
+
                     @else
+
                     <div
                         class="h-100 d-flex align-items-center justify-content-center text-center text-secondary fs-5 py-5">
                         Belum ada project yang tersedia.
                     </div>
+
                     @endif
 
                 </section>
+
             </main>
+
         </div>
 
         {{-- RUNNING TEXT --}}
+
         <footer class="running-wrapper d-flex align-items-center flex-shrink-0 mt-2 sticky-bottom">
+
             <div class="running-label d-flex align-items-center justify-content-center fw-bolder flex-shrink-0 h-100">
                 INFO
             </div>
 
             <div class="flex-grow-1 h-100 overflow-hidden d-flex align-items-center" style="min-width:0">
+
                 <div class="running-track d-inline-flex align-items-center text-nowrap">
+
                     @forelse ($teksBerjalans as $teks)
-                    <span class="running-text fw-bold">{{ $teks->teks }}</span>
+
+                    <span class="running-text fw-bold">
+                        {{ $teks->teks }}
+                    </span>
+
                     @empty
-                    <span class="running-text fw-bold">Pusat Informasi dan Kegiatan</span>
+
+                    <span class="running-text fw-bold">
+                        Pusat Informasi dan Kegiatan
+                    </span>
+
                     @endforelse
+
                 </div>
+
             </div>
+
         </footer>
 
     </div>
 
+    {{-- DIGITAL CLOCK --}}
+
     <script>
     function updateClock() {
         const el = document.getElementById('clock');
+
         if (el) {
             el.textContent = new Date().toLocaleTimeString('id-ID', {
-                    hour12: false
-                })
-                .replace(/\./g, ':');
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
         }
     }
+
     updateClock();
+
     setInterval(updateClock, 1000);
     </script>
 
