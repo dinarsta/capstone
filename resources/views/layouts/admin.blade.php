@@ -524,7 +524,7 @@
 
             <div class="brand">
 
-                <img src="{{ asset('logo.png') }}" class="brand-logo" alt="Logo">
+                <img src="{{ asset('logo.png') }}" alt="Logo" style="width: 100px; height: auto; max-width: 100%;">
 
                 <div>
 

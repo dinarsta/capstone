@@ -12,216 +12,105 @@ class DatabaseSeeder extends Seeder
     {
         /*
         |--------------------------------------------------------------------------
-        | 1. USERS
+        | 1. AKUN ADMIN
         |--------------------------------------------------------------------------
         */
 
         DB::table('users')->updateOrInsert(
-            ['id' => 4],
+            ['email' => 'admin@gmail.com'],
             [
-                'name' => 'Jason Pratama',
-                'email' => 'admin2@gmail.com',
-                'password' => Hash::make('admin123'),
+                'name' => 'Administrator',
+                'password' => Hash::make('123456'),
                 'role' => 'admin',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
         );
 
+        $adminId = DB::table('users')
+            ->where('email', 'admin@gmail.com')
+            ->value('id');
+
+
         /*
         |--------------------------------------------------------------------------
-        | 2. PEGAWAIS
+        | 2. DUMMY DATA PEGAWAI
         |--------------------------------------------------------------------------
         */
 
-        DB::table('pegawais')->updateOrInsert(
-            ['id' => 4],
+        $pegawais = [
             [
-                'nip' => '198901012020011001',
-                'nama' => 'Jason Pratama',
-                'jabatan' => 'Pranata Komputer',
+                'id' => 5,
+                'nip' => '199205152021011002',
+                'nama' => 'Andi Saputra',
+                'jabatan' => 'Analis Sistem Informasi',
                 'unit_kerja' => 'Bidang Teknologi Informasi',
+                'pangkat' => 'Penata Muda Tingkat I',
+            ],
+            [
+                'id' => 6,
+                'nip' => '199408202022012003',
+                'nama' => 'Siti Rahmawati',
+                'jabatan' => 'Pranata Komputer',
+                'unit_kerja' => 'Bidang Persandian',
                 'pangkat' => 'Penata Muda',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
+            ],
+        ];
+
+        foreach ($pegawais as $pegawai) {
+            DB::table('pegawais')->updateOrInsert(
+                ['id' => $pegawai['id']],
+                array_merge($pegawai, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ])
+            );
+        }
+
 
         /*
         |--------------------------------------------------------------------------
-        | 3. MASTER MODELS
+        | 3. DUMMY DATA AGENDAS
         |--------------------------------------------------------------------------
         */
 
-        DB::table('master_models')->updateOrInsert(
-            ['id' => 4],
+        $agendas = [
             [
-                'kategori' => 'instansi',
-                'nama' => 'Dinas Komunikasi dan Informatika',
-                'aktif' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        DB::table('master_models')->updateOrInsert(
-            ['id' => 5],
-            [
-                'kategori' => 'lokasi',
-                'nama' => 'Ruang Rapat Diskominfo',
-                'aktif' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        DB::table('master_models')->updateOrInsert(
-            ['id' => 6],
-            [
-                'kategori' => 'jenis_kegiatan',
-                'nama' => 'Rapat Koordinasi',
-                'aktif' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | 4. PROJECTS
-        |--------------------------------------------------------------------------
-        */
-
-        DB::table('projects')->updateOrInsert(
-            ['id' => 4],
-            [
-                'nama_project' => 'Pengembangan Sistem Informasi Manajemen Surat Tugas',
-                'deskripsi' => 'Pengembangan sistem pengelolaan surat tugas, pengajuan, validasi, dan pencetakan dokumen.',
-                'tanggal_mulai' => '2026-09-01',
-                'tanggal_selesai' => '2026-12-31',
-                'progress' => 35,
-                'status' => 'berjalan',
-                'created_by' => 4,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | 5. TIM PROJECTS
-        |--------------------------------------------------------------------------
-        */
-
-        DB::table('tim_projects')->updateOrInsert(
-            ['id' => 4],
-            [
-                'project_id' => 4,
-                'pegawai_id' => 4,
-                'peran' => 'Programmer',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | 6. AGENDAS
-        |--------------------------------------------------------------------------
-        */
-
-        DB::table('agendas')->updateOrInsert(
-            ['id' => 4],
-            [
-                'judul' => 'Rapat Koordinasi Pengembangan Sistem',
-                'deskripsi' => 'Pembahasan progres pengembangan Sistem Informasi Manajemen Surat Tugas.',
-                'tanggal' => '2026-10-15',
+                'id' => 5,
+                'judul' => 'Pengembangan Sistem Informasi Manajemen Surat Tugas',
+                'deskripsi' => 'Pembahasan pengembangan sistem informasi manajemen surat tugas.',
+                'tanggal' => '2026-11-15',
                 'waktu' => '09:00:00',
                 'lokasi' => 'Ruang Rapat Diskominfo',
-                'status' => 'aktif',
-                'created_by' => 4,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | 7. SURAT TUGAS
-        |--------------------------------------------------------------------------
-        */
-
-        DB::table('surat_tugas')->updateOrInsert(
-            ['id' => 4],
+            ],
             [
-                'nomor_surat' => 'ST/004/2026',
-                'kegiatan' => 'Rapat Koordinasi Pengembangan Sistem',
-                'pegawai_id' => 4,
-                'instansi_id' => 4,
-                'lokasi_id' => 5,
-                'jenis_kegiatan_id' => 6,
-                'tanggal_mulai' => '2026-10-15',
-                'tanggal_selesai' => '2026-10-15',
-                'dokumen_pdf' => null,
-                'status' => 'diajukan',
-                'catatan' => null,
-                'created_by' => 4,
-                'approved_by' => null,
-                'approved_at' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | 8. SLIDE DISPLAYS
-        |--------------------------------------------------------------------------
-        |
-        | Tidak diisi data.
-        | Gambar ditambahkan melalui menu Slide Display.
-        |
-        */
-
-        /*
-        |--------------------------------------------------------------------------
-        | 9. TEKS BERJALANS
-        |--------------------------------------------------------------------------
-        */
-
-        DB::table('teks_berjalans')->updateOrInsert(
-            ['id' => 4],
+                'id' => 6,
+                'judul' => 'Rapat Koordinasi Tim Teknologi Informasi',
+                'deskripsi' => 'Koordinasi dan evaluasi pekerjaan tim teknologi informasi.',
+                'tanggal' => '2026-11-17',
+                'waktu' => '10:00:00',
+                'lokasi' => 'Ruang Rapat Utama',
+            ],
             [
-                'teks' => 'Selamat datang di Sistem Informasi Manajemen Surat Tugas',
-                'aktif' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
+                'id' => 7,
+                'judul' => 'Evaluasi Progres Project Sistem Informasi',
+                'deskripsi' => 'Evaluasi progres project dan pembahasan kendala pengembangan.',
+                'tanggal' => '2026-11-20',
+                'waktu' => '13:30:00',
+                'lokasi' => 'Laboratorium Komputer',
+            ],
+        ];
 
-        /*
-        |--------------------------------------------------------------------------
-        | 10. SETTING DISPLAYS
-        |--------------------------------------------------------------------------
-        */
-
-        DB::table('setting_displays')->updateOrInsert(
-            ['id' => 4],
-            [
-                'nama_setting' => 'judul_display',
-                'nilai' => 'SISTEM INFORMASI MANAJEMEN SURAT TUGAS',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | 11. BERTUGAS
-        |--------------------------------------------------------------------------
-        |
-        | Tidak diisi data.
-        |
-        */
+        foreach ($agendas as $agenda) {
+            DB::table('agendas')->updateOrInsert(
+                ['id' => $agenda['id']],
+                array_merge($agenda, [
+                    'status' => 'aktif',
+                    'created_by' => $adminId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ])
+            );
+        }
     }
 }

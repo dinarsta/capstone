@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SuratTugas extends Model
 {
@@ -29,32 +30,32 @@ class SuratTugas extends Model
         'approved_at' => 'datetime',
     ];
 
-    public function pegawai()
+    public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Pegawai::class);
+        return $this->belongsTo(Pegawai::class, 'pegawai_id');
     }
 
-    public function pembuat()
+    public function pembuat(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function approver()
+    public function approver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
 
-    public function instansi()
+    public function instansi(): BelongsTo
     {
         return $this->belongsTo(MasterModel::class, 'instansi_id');
     }
 
-    public function lokasi()
+    public function lokasi(): BelongsTo
     {
         return $this->belongsTo(MasterModel::class, 'lokasi_id');
     }
 
-    public function jenisKegiatan()
+    public function jenisKegiatan(): BelongsTo
     {
         return $this->belongsTo(MasterModel::class, 'jenis_kegiatan_id');
     }
